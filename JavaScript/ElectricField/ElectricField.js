@@ -18,7 +18,7 @@ function Field_Arrow(x, y) {
 	this.xField = [];
 	this.yField = [];
 	this.magnitudeField = 0;
-	this.k = 9 * 10e9;
+	this.k = 9 * 10 ** 9;
 
 	this.draw = function() {
 
@@ -43,31 +43,31 @@ function Field_Arrow(x, y) {
 		var yDis; // y displacement
 		var hDis; // hypotenuse 
 		var i;
-		var fieldMag;
+		var fieldMag = 0;
+		var tempAngle = 0;
 		numCharges = chargeList.length;
 		for(i = 0; i < numCharges; i++) {
 			xDis = Math.abs(this.x - chargeList[i].x);
 			yDis = Math.abs(this.y - chargeList[i].y);
 			hDis = Math.sqrt(xDis ** 2 + yDis ** 2);
-			// x greater and y greater
-			if(this.x > chargeList[i].x && this.y > chargeList[i].y){
-				tempAngle = 270 - Math.asin(xDis/hDis);
+
+			console.log("yDis: " + yDis);
+			console.log("xDis: " + xDis);
+			console.log("hDis: " + hDis);
+
+			// charge x greater than arrow x
+			if(chargeList[i].x > this.x){
+				tempAnlge = 360 - (Math.atan(yDis / xDis) * 180 / Math.PI);
 			}
-			// x greater and y lessthan
-			else if(this.x > chargeList[i].x && this.y < chargeList[i].y) {
-				tempAngle = 180 - Math.sin(yDis/hDis);
+			// charge x less than arrow x
+			else{
+				tempAnlge = 180 - (Math.atan(yDis / xDis) * 180 / Math.PI);
 			}
-			// x less than and y greater
-			else if(this.x < chargeList[i].x && this.y > chargeList[i].y) {
-				tempAngle = 360 - Math.asin(xDis/hDis);
-			}
-			// x less than and y less than
-			else {
-				tempAngle = Math.asin(yDis/hDis);
-			}
+			console.log("temp angle: " + tempAngle);			
 
 			// find the magnitude of the field
-			fieldMag = this.k * this.q / (hDis ** 2);
+			fieldMag = (this.k * chargeList[i].q) / (hDis ** 2);
+			console.log("field magnitude: " + fieldMag);
 		}
 
 	}
@@ -100,10 +100,13 @@ function addCharge() {
 	var xLoc = document.getElementById("xPos").value;
 	var yLoc = document.getElementById("yPos").value;
 	var charge = document.getElementById("charge").value;
-	if(xLoc == "" || yLoc=="" || charge == ""){
+	if(xLoc == "" || yLoc == "" || charge == ""){
 		console.log("missing credentials");
 	}
 	else{
+		xLoc = parseFloat(xLoc);
+		yLoc = parseFloat(yLoc);
+		charge = parseFloat(charge);
 		chargeList.push(new Charge(xLoc,yLoc,charge));
 		console.log(chargeList);		
 	}
@@ -115,9 +118,30 @@ function removeCharge(){
 	chargeList.pop;
 }
 
+// for debugging purposes add individual field arrows
+function addArrow(){
+	var xLoc = document.getElementById("xPos").value;
+	var yLoc = document.getElementById("yPos").value;
+	if(xLoc == "" || yLoc== "" || charge == ""){
+		console.log("missing credentials");
+	}
+	else{
+		xLoc = parseFloat(xLoc);
+		yLoc = parseFloat(yLoc);
+		arrowList.push(new Field_Arrow(xLoc, yLoc));
+		console.log(arrowList);
+	}
+
+}
+
 // draws all elements on the field
 // resets the field
 // calls the update function on all obejcts
 function update() {
+	numCharges = chargeList.length;
+	numArrows = arrowList.length;
 
+	for(var i = 0; i < numArrows; i++){
+		arrowList[i].update();
+	}
 }
