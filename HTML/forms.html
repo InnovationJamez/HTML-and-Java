@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+	<code>
+		x=5;<br/>
+		y=6;<br/>
+		z=x+y;
+	</code>
+
+	<p>Save the document by pressing <kbd>Ctrl + S</kbd></p>
+
+	Einstein wrote: <var>E</var> = <var>mc</var><sup>2</sup>
+
+	<form>
+		First name: <br/>
+		<input type="text" name="firstname"/><br/>
+		Last name: <br/>
+		<input type="text" name="lastname"/>
+	</form>
+
+	<form>
+		<input type="radio" name="console" value="xbox" checked> XBOX<br/>
+		<input type="radio" name="console" value="nintendo"> Nintendo<br/>
+		<input type="radio" name="console" valule="sony"> Sony<br/>
+	</form>
+
+	<form action="/action_page.php">
+		First name:<br/>
+		<input type="text" name="firstname" value="Mickey"><br/>
+		Last name:<br/>
+		<input type="text" name="lastname" value="Mouse"><br/><br/>
+		<input type="submit" value="Submit">
+	</form>
+
+	<hr />
+
+	<select name="cars" size="3" multiple>
+		<option value="volvo">Volvo </option>
+		<option value="saab" selected>Saab</option>
+		<option value="fiat">Fiat</option>
+		<option value="audi">Audi</option>
+	</select><br/>
+
+	<hr/>
+
+	<textarea name="message" rows="10" cols="30">
+		The cat was playing in the garden
+	</textarea>
+
+	<button type="button" onclick="alert('Hello World')">Click Me!</button>
+
+	<form action="/action_page.php">
+		<input list="browsers"/>
+		<datalists id="browsers">
+			<option value="Internet Explorer"/>
+			<option value="Firefox"/>
+			<option value="chrome"/>
+			<option value="Opera"/>
+			<option value="Safari"/>
+		</datalists>
+	</form>
+
+	<form action="/action_page.php" oninput="x.value=parseInt(a.value)+parseInt(b.value)">
+		0
+		<input type="range" id="a" name="a" value="50">
+		100 +
+		<input type="number" id="b" name="b" value="50">
+		=
+		<output name="x" for="a b"></output>
+		<br/><br/>
+		<input type="submit">
+	</form>
+
+	<form>
+		First name:<br/>
+		<input type="text" name="firstname" value="James"><br/>
+		Last name:<br/>
+		<input type="text" name="lastname" value="Lehoe"><br/>
+		User password:<br/>
+		<input type="password" name="psw" value="Innovation1997" readonly><br/>
+		<input type="submit" value="Submit">
+		<input type="reset">
+	</form>
+
+	<form>
+		<input type="date" name="anime" value="codegeass">Code Geass<br/>
+		<input type="button" name="anime" value="evangelion">Evangelion<br/>
+		<input type="button" name="anime" value="nichijou">Nichijou<br/>
+	</form>
+
+
+
+</body>
+</html> 

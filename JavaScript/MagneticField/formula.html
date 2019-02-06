@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Physics Formulas</title>
+	<style>
+		body {
+			margin:0px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Physics Forulas</h1>
+	<h2>Moving electric charge</h2>
+	<h3>B = µ<sub>0</sub>I / ( 2 π R )</h3>
+	<form>
+		I: <input id="ione" type="number"><br />
+		R: <input id="itwo" type="number"><br />
+		Submit: <button type="button" onclick="magneticField()">Click Me</button>
+		<h2 id = "answerOne"></h2>
+	</form>
+	<h3>F = I L B sin(Θ)</h3>
+	<form>
+		I: <input id="ithree" type="number"><br />
+		L: <input id="ifour" type="number"><br />
+		B: <input id="ifive" type="number"><br />
+		Θ: <input id="isix" type="number"><br />
+		Submit: <button type="button" onclick="magneticForce()">Click Me</button>
+		<h2 id = "answerTwo"></h2>
+	</form>
+
+	<script>
+		function magneticField(){
+			var I = document.getElementById("ione").value;
+			var R = document.getElementById("itwo").value;
+			var B = (4*10e-7 * I) / (2 * Math.PI * R);
+			console.log(B);
+			document.getElementById("answerOne").innerHTML = "B = " + B;
+		}
+
+		function magneticForce(){
+			var I = document.getElementById("ithree").value;
+			var L = document.getElementById("ifour").value;
+			var B = document.getElementById("ifive").value;
+			var theta = document.getElementById("isix").value;
+			var F = I * L * B * Math.sin(theta * Math.PI / 180);
+			document.getElementById("answerTwo").innerHTML = "F = " + F + "N";
+		}
+	<!--
+		I = Q / t
+
+		I = qN / t
+
+		moving partacle
+		F = B q v sin(theta)
+	-->
+	</script>
+</body>
+</html>

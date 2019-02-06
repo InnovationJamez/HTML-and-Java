@@ -1,0 +1,49 @@
+<DOCTYPE html>
+<html>
+<head>
+	<title>Moving charge</title>
+
+	<style>
+
+		canvas {
+			width:80%;
+			height:98.5%;
+			border-right:5px solid black;
+			padding:0px;
+		}
+
+		#window {
+			border:5px solid black;
+
+		}
+
+		#controlWindow {
+			float:right;
+			width:5%;
+			padding:5%;
+		}
+
+		body {
+			margin:0px;
+		}
+
+	</style>
+</head>
+	<div id="window">
+		<canvas id="canvasOne"></canvas>
+
+		<div id="controlWindow">
+			<form>
+				Magnetic field:<br /><input type="number" min="0" max="100" value="50"><br />
+				Other Input:<br /> <input type="number" min="0" max="100" value="50"><br />
+				Another Input:<br /><input type="number" min="0" max="100" value="50"><br />
+				Last Input:<br /><input type="number" min="0" max="100" value="50"><br />
+			</form>
+		</div>
+	</div>
+
+	<script src="movingCharge.js"></script>
+<body>
+</body>
+</html>
+

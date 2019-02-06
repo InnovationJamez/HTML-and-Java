@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>YouTube Tutorial</title>
+
+	<style type="text/css">
+
+
+	</style>
+</head>
+<body>
+
+	<input type="number" id="inputBox">
+	<button type="button" onclick="getInput()">Enter base ten number</button>
+	<p id="outputBox"></p>
+	
+	<script type="text/javascript">
+		var inputText;
+
+		function getInput(){
+			var decNum = parseInt(document.getElementById("inputBox").value);
+			var binNum = decNum.toString(2);
+			var hexNum = decNum.toString(16);
+			var text = "dec number: " + decNum + "<br/>bin number: " + binNum + "<br/>hex number: " + hexNum;
+			document.getElementById("outputBox").innerHTML = text;
+		}
+
+	</script>
+
+	<!-- ------------------------------------------------------ -->
+
+	<h2> What is <span id="decNum">___</span> in binary?</h2>
+
+	<input type="text" id="inputBox1">
+	<button type="button" onclick="checkAnswer()">Check Answer</button>
+	<p id="answer"></p>
+
+	<script>
+		var decNum1 = Math.floor(Math.random()*20);
+		var binNum1 = decNum1.toString(2);
+		document.getElementById("decNum").innerHTML = decNum1;
+
+		function checkAnswer(){
+			var answer = document.getElementById("inputBox1").value;
+			if(answer == binNum1){
+				document.getElementById("inputBox1").style.backgroundColor
+				="green";
+			}
+			else{
+				document.getElementById("inputBox1").style.backgroundColor
+				="red";
+			}
+		}
+	</script>
+
+</body>

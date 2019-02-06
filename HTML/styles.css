@@ -1,0 +1,99 @@
+body {
+	background-color: 
+	powderblue;}
+
+h1	{
+	color: blue; 
+	border: 1px solid green;
+	padding: 30px;
+	margin: 50px;
+	}
+
+p 	{
+	color:red;
+	font-family: 
+	courier;
+	margin: 20px;
+	}
+
+
+#p01 {
+
+	color:blue;
+}
+
+p.error {
+	color: red;
+}
+
+a:link{
+	color: green;
+	background-color: transparent;
+	text-decoration:none;
+}
+
+a:visited {
+	color: purple;
+	background-color: transparent;
+	text-declaration: underline;
+}
+
+a:hover{
+	color: red;
+	background-color: transparent;
+	text-decoration: underline;
+}
+
+a:active{
+	color:yellow;
+	background-color: transparent;
+	text-decoration: underline;
+}
+
+#img1 {
+	width:42px;
+	height:42px;
+	border:0;
+}
+
+#img2 {
+	width:75%
+	boarder:0;
+}
+
+table, th, td{
+	border: 1px solid black;
+}
+
+th, td{
+	padding: 15px;
+}
+
+th{
+	text-align: left;
+}
+
+table{
+	border-spacing: 5px;
+}
+
+.cities{
+	background-color: black;
+	color:white;
+	margin: 20px;
+	padding: 20px;
+}
+
+.note{
+	font-size:120%;
+	color:green;
+}
+
+#myHeader{
+	background-color:lightblue;
+	color: black;
+	padding: 40px;
+	text-align: center;
+	border:0px;
+}
+

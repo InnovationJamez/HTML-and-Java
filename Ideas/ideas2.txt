@@ -1,0 +1,2 @@
+modeling movement of a partacle in a megnetic field
+

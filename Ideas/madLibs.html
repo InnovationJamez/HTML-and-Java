@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		input{
+			margin:20px;
+		}
+	</style>
+</head>
+<body>
+
+	<h1>Butcher Shakesphere</h1>
+
+	<input id="noun1">Noun<br/>
+	<input id="noun2">Noun<br/>
+	<input id="place1">Place<br/>
+	<input id="adjective1">Adjective<br/>
+	<input id="adjective2">Adjective<br/>
+	<input id="adjective3">Adjective<br/>
+	<input id="adjective4">Adjective<br/>
+
+	<button type="button" id="b1">Enter</button>
+
+	<p id="text">Two households, both alike in <span id="a1">dignity</span>,
+	In fair <span id="p1">Verona</span>, where we lay our scene,
+	From <span id="a2">ancient</span> grudge break to new mutiny,
+	Where civil blood makes <span="a2">civil</span> 
+	hands <span id="a3">unclean</span>.
+	From forth the <span id="a4">fatal</span> 
+	<span id="n1">loin</span>s of these two foes
+	A pair of star-cross'd lovers take their <span id="n2">life</span>;
+	Whole misadventured piteous overthrows.
+	Do with their death bury their parents' strife.</p>
+
+	<script>
+		var inputs = ["noun1", "noun2", "place1", 
+		"adjective1", "adjective3", "adjective1", "adjective4"]
+
+		var outputs = ["n1", "n2", "p1", "a1", "a2", "a3", "a4"];
+
+		document.getElementById("b1").onclick = function(){
+			for(var i = 0; i<inputs.length;i++){
+				console.log(document.getElementById(inputs[i]).value);
+				console.log(outputs[i]);
+				console.log(document.getElementById(outputs[i]).innerHTML);
+				document.getElementById(outputs[i]).innerHTML = document.getElementById(inputs[i]).value;
+			}
+		}
+	</script>
+</body>
+</html>
