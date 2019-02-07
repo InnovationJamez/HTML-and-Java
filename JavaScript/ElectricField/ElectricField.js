@@ -7,15 +7,28 @@ var numArrows = 0;
 // canves elements
 var canvasOne = document.querySelector('canvas');
 canvasOne.width = window.innerWidth;
-canvasOne.height = 500;//window.innerHeight;
+canvasOne.height = window.innerHeight;
 
 var c = canvasOne.getContext("2d");
 
 // click event
 
-canvasOne.addEventListener('click',function(event){
+window.addEventListener('click',function(event){
 	mouse.x = event.x;
 	mouse.y = event.y;
+
+	numCharges = chargeList.length;
+
+	for(var i = 0; i < numCharges; i++){
+		chargeList[i].select();
+	}
+
+});
+
+window.addEventListener('mousemove', function(event){
+	mouse.x = event.x;
+	mouse.y = event.y;
+	update();
 });
 
 // object to store the location of clicks
@@ -80,6 +93,10 @@ function Field_Arrow(x, y) {
 		find the magnitude of the e field
 		find the firection in drgrees
 		*/
+		this.xField = [];
+		this.xFieldSum = 0;
+		this.yField = [];
+		this.yFieldSum = 0;
 		var tempAngle;
 		var xDis = 0; // x displacement
 		var yDis = 0; // y displacement
@@ -101,15 +118,12 @@ function Field_Arrow(x, y) {
 			// find the angle from arrow to charge
 
 			if(chargeList[i].x > this.x){
-				tempAngle = 360 - (Math.atan(yDis / xDis) * 180 / Math.PI);
-			}
-			else{
 				tempAngle = 180 - (Math.atan(yDis / xDis) * 180 / Math.PI);
 			}
-
-			// if a posetice charge reverse direction
-			tempAngle += (chargeList[i].q > 0) ? 180 : 0;
-			tempAngle = tempAngle % 360;		
+			else{
+				tempAngle = 360 - (Math.atan(yDis / xDis) * 180 / Math.PI);
+			}
+			
 
 			// find the magnitude of the field
 			fieldMag = (this.k * chargeList[i].q) / (hDis ** 2);
@@ -133,6 +147,11 @@ function Field_Arrow(x, y) {
 				yComp = Math.cos((360 - tempAngle) * Math.PI / 180) * fieldMag;
 			}
 
+			// push the vallues
+
+			console.log(xComp);
+			console.log(yComp);
+
 			this.xField.push(xComp);
 			this.yField.push(yComp);
 		}
@@ -142,11 +161,16 @@ function Field_Arrow(x, y) {
 			this.xFieldSum = getSum(this.xField);
 			this.yFieldSum = getSum(this.yField);
 
-			this.angle = Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
-			console.log(this.yFieldSum);
-			console.log(this.xFieldSum);
-			console.log(this.angle);
+			if(this.xFieldSum >= 0 ){
+				this.angle = Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
+			}
+			else{
+				this.angle = 180 + Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
+			}
+
 		}
+
+		this.len = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2) / 100000 % 20 + 5;
 
 		this.draw();
 
@@ -176,18 +200,30 @@ function Charge(x, y, q) {
 	this.x = x;
 	this.y = canvasOne.height - y;
 	this.q = q;
+	this.selected = false;
+
+	this.select = function() {
+		if(Math.abs(mouse.x - this.x) < 30 && Math.abs(mouse.y - this.y < 30)){
+			this.selected = !this.selected;
+		}
+	}
 
 	this.draw = function() {
 		c.beginPath();
 		c.arc(this.x,this.y,10,Math.PI*2,false);
 		c.strokeStyle = 'rgb(' + this.x + ',' + 0 + ',' + this.y + ', 1)';
-		c.fillStyle = (q > 0) ? 'black' : 'red';
+		c.fillStyle = (q > 0) ? 'blue' : 'red';
 		c.fill();
-		c.strokeStyle = (q > 0) ? 'black' : 'red';
+		c.strokeStyle = (q > 0) ? 'blue' : 'red';
 		c.stroke();
 	}
 
 	this.update = function() {
+		if(this.selected == true){
+			this.x = mouse.x;
+			this.y = mouse.y;
+		}
+
 		this.draw();
 	}
 }
@@ -250,7 +286,7 @@ function update() {
 	}
 }
 
-/*
+
 createArrows();
 update();
-*/
+
