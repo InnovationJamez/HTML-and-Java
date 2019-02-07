@@ -4,24 +4,66 @@ var numCharges = 0;
 var arrowList = [];
 var numArrows = 0;
 
+// canves elements
+var canvasOne = document.querySelector('canvas');
+canvasOne.width = window.innerWidth;
+canvasOne.height = 500;//window.innerHeight;
+
+var c = canvasOne.getContext("2d");
+
+// click event
+
+canvasOne.addEventListener('click',function(event){
+	mouse.x = event.x;
+	mouse.y = event.y;
+});
+
 // object to store the location of clicks
 var mouse = {
-	mouseX:0,
-	mouseY:0
+	x:0,
+	x:0
 };
+
+// function for getting sum of array
+
+function getSum(numList) {
+	var sum = 0;
+	length = numList.length;
+	for(var i = 0; i < length; i++){
+		sum += numList[i];
+	}
+	return sum;
+}
 
 // the outline of the field arrow objects
 function Field_Arrow(x, y) {
 	this.x = x;
-	this.y = y;
+	this.y = canvasOne.height - y;
 	this.angle = 0;
 	this.xField = [];
+	this.xFieldSum = 0;
 	this.yField = [];
+	this.yFieldSum = 0;
 	this.magnitudeField = 0;
 	this.k = 9 * 10 ** 9;
+	this.len = 10;
+
 
 	this.draw = function() {
-
+		c.beginPath();
+		c.moveTo(-Math.cos(this.angle * Math.PI / 180) * this.len + this.x, 
+			Math.sin(this.angle * Math.PI / 180) * this.len + this.y);
+		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
+			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
+		// Arrow Head
+		c.lineTo(-Math.cos((this.angle - 20) * Math.PI / 180) * -this.len / 2 + this.x, 
+			Math.sin((this.angle - 20) * Math.PI / 180) * -this.len / 2 + this.y);
+		c.lineTo(-Math.cos((this.angle + 20) * Math.PI / 180) * -this.len / 2 + this.x, 
+			Math.sin((this.angle + 20) * Math.PI / 180) * -this.len / 2 + this.y);
+		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
+			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
+		c.strokeStyle = 'black';
+		c.stroke();
 	}
 
 	this.update = function() {
@@ -39,59 +81,114 @@ function Field_Arrow(x, y) {
 		find the firection in drgrees
 		*/
 		var tempAngle;
-		var xDis; // x displacement
-		var yDis; // y displacement
-		var hDis; // hypotenuse 
-		var i;
+		var xDis = 0; // x displacement
+		var yDis = 0; // y displacement
+		var hDis = 0; // hypotenuse 
+		var i = 0;
 		var fieldMag = 0;
 		var tempAngle = 0;
 		numCharges = chargeList.length;
+		var xComp = 0;
+		var yComp = 0;
+
+		// for each charge find the field 
+
 		for(i = 0; i < numCharges; i++) {
-			xDis = Math.abs(this.x - chargeList[i].x);
-			yDis = Math.abs(this.y - chargeList[i].y);
+			xDis = this.x - chargeList[i].x;
+			yDis = this.y - chargeList[i].y;
 			hDis = Math.sqrt(xDis ** 2 + yDis ** 2);
 
-			console.log("yDis: " + yDis);
-			console.log("xDis: " + xDis);
-			console.log("hDis: " + hDis);
+			// find the angle from arrow to charge
 
-			// charge x greater than arrow x
 			if(chargeList[i].x > this.x){
-				tempAnlge = 360 - (Math.atan(yDis / xDis) * 180 / Math.PI);
+				tempAngle = 360 - (Math.atan(yDis / xDis) * 180 / Math.PI);
 			}
-			// charge x less than arrow x
 			else{
-				tempAnlge = 180 - (Math.atan(yDis / xDis) * 180 / Math.PI);
+				tempAngle = 180 - (Math.atan(yDis / xDis) * 180 / Math.PI);
 			}
-			console.log("temp angle: " + tempAngle);			
+
+			// if a posetice charge reverse direction
+			tempAngle += (chargeList[i].q > 0) ? 180 : 0;
+			tempAngle = tempAngle % 360;		
 
 			// find the magnitude of the field
 			fieldMag = (this.k * chargeList[i].q) / (hDis ** 2);
-			console.log("field magnitude: " + fieldMag);
+
+			// get the a and y components of the field vector
+
+			if(tempAngle <= 90) {
+				xComp = Math.cos(tempAngle * Math.PI / 180) * fieldMag;
+				yComp = Math.sin(tempAngle * Math.PI / 180) * fieldMag;
+			}
+			else if(tempAngle > 90 || tempAngle <= 180) {
+				xComp = -Math.cos((180 - tempAngle) * Math.PI / 180) * fieldMag;
+				yComp = Math.sin((180 - tempAngle) * Math.PI / 180) * fieldMag;
+			}
+			else if(tempAngle > 180 || tempAngle <= 270) {
+				xComp = Math.sin((270 - tempAngle) * Math.PI / 180) * fieldMag;
+				yComp = Math.cos((270 - tempAngle) * Math.PI / 180) * fieldMag;
+			}
+			else {
+				xComp = Math.sin((360 - tempAngle) * Math.PI / 180) * fieldMag;
+				yComp = Math.cos((360 - tempAngle) * Math.PI / 180) * fieldMag;
+			}
+
+			this.xField.push(xComp);
+			this.yField.push(yComp);
 		}
+
+		if(this.xField.length > 0 && this.yField.length > 0) {
+
+			this.xFieldSum = getSum(this.xField);
+			this.yFieldSum = getSum(this.yField);
+
+			this.angle = Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
+			console.log(this.yFieldSum);
+			console.log(this.xFieldSum);
+			console.log(this.angle);
+		}
+
+		this.draw();
 
 	}
 }
 
+// creating field arrows
+var rows = Math.floor(window.innerHeight / 25);
+var columns= Math.floor(window.innerWidth / 25);
+var arrowX, arrowY;
+
 // create the field arrows and fill the list
+// create a grid of arrows
 
 function createArrows() {
-
+	for(var i = 0; i < columns * rows; i++){
+	arrowX = ((i + columns) % columns) * window.innerWidth / 
+		columns + window.innerWidth / (2 * columns);
+	arrowY = Math.floor(i/columns) * window.innerHeight / 
+		rows + window.innerWidth / (2 * rows);
+	arrowList.push(new Field_Arrow(arrowX,arrowY));
+	}
 }
 
 // outline of the charge objects
 function Charge(x, y, q) {
 	this.x = x;
-	this.y = y;
+	this.y = canvasOne.height - y;
 	this.q = q;
 
 	this.draw = function() {
-
+		c.beginPath();
+		c.arc(this.x,this.y,10,Math.PI*2,false);
+		c.strokeStyle = 'rgb(' + this.x + ',' + 0 + ',' + this.y + ', 1)';
+		c.fillStyle = (q > 0) ? 'black' : 'red';
+		c.fill();
+		c.strokeStyle = (q > 0) ? 'black' : 'red';
+		c.stroke();
 	}
 
 	this.update = function() {
-
-		
+		this.draw();
 	}
 }
 
@@ -107,9 +204,10 @@ function addCharge() {
 		xLoc = parseFloat(xLoc);
 		yLoc = parseFloat(yLoc);
 		charge = parseFloat(charge);
-		chargeList.push(new Charge(xLoc,yLoc,charge));
-		console.log(chargeList);		
+		chargeList.push(new Charge(xLoc,yLoc,charge));		
 	}
+
+	update();
 
 }
 
@@ -122,15 +220,16 @@ function removeCharge(){
 function addArrow(){
 	var xLoc = document.getElementById("xPos").value;
 	var yLoc = document.getElementById("yPos").value;
-	if(xLoc == "" || yLoc== "" || charge == ""){
+	if(xLoc == "" || yLoc== ""){
 		console.log("missing credentials");
 	}
 	else{
 		xLoc = parseFloat(xLoc);
 		yLoc = parseFloat(yLoc);
 		arrowList.push(new Field_Arrow(xLoc, yLoc));
-		console.log(arrowList);
 	}
+
+	update();
 
 }
 
@@ -138,10 +237,20 @@ function addArrow(){
 // resets the field
 // calls the update function on all obejcts
 function update() {
+	c.clearRect(0,0,innerWidth, innerHeight);
 	numCharges = chargeList.length;
 	numArrows = arrowList.length;
 
 	for(var i = 0; i < numArrows; i++){
 		arrowList[i].update();
 	}
+
+	for(var i = 0; i < numCharges; i++){
+		chargeList[i].update();
+	}
 }
+
+/*
+createArrows();
+update();
+*/

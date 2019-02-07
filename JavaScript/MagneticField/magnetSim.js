@@ -9,7 +9,7 @@ var mouse = {
 	y:undefined
 }
 
-window.addEventListener('click',function(even){
+window.addEventListener('click',function(event){
 	mouse.x = event.x;
 	mouse.y = event.y;
 	pos.selected();
