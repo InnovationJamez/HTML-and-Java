@@ -170,7 +170,7 @@ function Field_Arrow(x, y) {
 				this.angle = 180 + Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
 			}
 
-			this.len = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2) / 200000 + 5;
+			this.len = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2) / 300000 + 5;
 			this.len = (this.len > 20) ? 20 : this.len;
 
 		}
@@ -243,7 +243,7 @@ function Charge(x, y, q) {
 function addCharge() {
 	var xLoc = document.getElementById("xPos").value;
 	var yLoc = document.getElementById("yPos").value;
-	var charge = document.getElementById("charge").value;
+	var charge = document.getElementById("chargeBox").value;
 	if(xLoc == "" || yLoc == "" || charge == ""){
 		console.log("missing credentials");
 	}
@@ -299,6 +299,10 @@ function update() {
 	}
 }
 
+// edit the chage box when the number on the slider is changed
+function chargeBox(num){
+	document.getElementById('chargeBox').value = num;
+}
 
 createArrows();
 update();
