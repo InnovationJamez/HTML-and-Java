@@ -48,7 +48,10 @@ function getSum(numList) {
 	return sum;
 }
 
+// consctors
 // the outline of the field arrow objects
+
+// Field Arrow
 function Field_Arrow(x, y) {
 	this.x = x;
 	this.y = canvasOne.height - y;
@@ -186,7 +189,7 @@ function Field_Arrow(x, y) {
 		this.draw();
 
 	}
-}
+} // Field Arrow
 
 // creating field arrows
 var rows = Math.floor(window.innerHeight / 25);
@@ -207,6 +210,7 @@ function createArrows() {
 }
 
 // outline of the charge objects
+// charge Object
 function Charge(x, y, q) {
 	this.x = x;
 	this.y = canvasOne.height - y;
