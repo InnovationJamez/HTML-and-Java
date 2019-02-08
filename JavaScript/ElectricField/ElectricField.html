@@ -21,10 +21,15 @@
 
 	X Position: <input type="number" id="xPos" value=250>m<br/>
 	Y Position: <input type="number" id="yPos" value=250>m<br/>
-	Charge: <input type="number" id="charge" value=2>C<br/>
+	Charge: <input type="number" id="charge" value=0.5>C<br/>
 	<button type="button" id="enterInfo" onclick="addCharge()">Create charge</button>
+	<button type="button" onclick="removeCharge()">Remove charge</button>
 	<button type="button" id="enterInfo" onclick="addArrow()">Create Arrow</button>
 	<button type="button" id="enterInfo" onclick="update()">update</button><br />
+
+	<p>
+		keep charge values less than one 
+	</p>
 
 	<script src="ElectricField.js"></script>
 </body>

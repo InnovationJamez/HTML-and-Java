@@ -78,13 +78,14 @@ function Field_Arrow(x, y){
 		c.lineTo(-Math.cos(this.rotation * Math.PI / 180) * -this.len + this.x, 
 			Math.sin(this.rotation * Math.PI / 180) * -this.len + this.y);
 		// Arrow Head
-		c.lineTo(-Math.cos((this.rotation - 20) * Math.PI / 180) * -this.len / 2 + this.x, 
-			Math.sin((this.rotation - 20) * Math.PI / 180) * -this.len / 2 + this.y);
-		c.lineTo(-Math.cos((this.rotation + 20) * Math.PI / 180) * -this.len / 2 + this.x, 
-			Math.sin((this.rotation + 20) * Math.PI / 180) * -this.len / 2 + this.y);
+		c.lineTo(-Math.cos((this.rotation - 20) * Math.PI / 180) * -this.len * 0.25 + this.x, 
+			Math.sin((this.rotation - 20) * Math.PI / 180) * -this.len * 0.25 + this.y);
+		c.lineTo(-Math.cos((this.rotation + 20) * Math.PI / 180) * -this.len * 0.25 + this.x, 
+			Math.sin((this.rotation + 20) * Math.PI / 180) * -this.len * 0.25 + this.y);
 		c.lineTo(-Math.cos(this.rotation * Math.PI / 180) * -this.len + this.x, 
 			Math.sin(this.rotation * Math.PI / 180) * -this.len + this.y);
 		c.strokeStyle = 'black';
+		c.fill();
 		c.stroke();
 	}
 }

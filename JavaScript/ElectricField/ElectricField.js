@@ -69,13 +69,15 @@ function Field_Arrow(x, y) {
 		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
 			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
 		// Arrow Head
-		c.lineTo(-Math.cos((this.angle - 20) * Math.PI / 180) * -this.len / 2 + this.x, 
-			Math.sin((this.angle - 20) * Math.PI / 180) * -this.len / 2 + this.y);
-		c.lineTo(-Math.cos((this.angle + 20) * Math.PI / 180) * -this.len / 2 + this.x, 
-			Math.sin((this.angle + 20) * Math.PI / 180) * -this.len / 2 + this.y);
+		c.lineTo(-Math.cos((this.angle - 40) * Math.PI / 180) * -this.len  * 0.25 + this.x, 
+			Math.sin((this.angle - 40) * Math.PI / 180) * -this.len * 0.25 + this.y);
+		c.lineTo(-Math.cos((this.angle + 40) * Math.PI / 180) * -this.len * 0.25 + this.x, 
+			Math.sin((this.angle + 40) * Math.PI / 180) * -this.len * 0.25 + this.y);
 		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
 			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
 		c.strokeStyle = 'black';
+		c.fillStyle = 'black';
+		c.fill();
 		c.stroke();
 	}
 
@@ -168,9 +170,18 @@ function Field_Arrow(x, y) {
 				this.angle = 180 + Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
 			}
 
+			this.len = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2) / 200000 + 5;
+			this.len = (this.len > 20) ? 20 : this.len;
+
+		}
+		else{
+
+			this.angle = 0;
+			this.len = 5;
 		}
 
-		this.len = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2) / 100000 % 20 + 5;
+
+
 
 		this.draw();
 
@@ -249,7 +260,9 @@ function addCharge() {
 
 // will remove one charge from the list of charges
 function removeCharge(){
-	chargeList.pop;
+	chargeList.pop();
+
+	update();
 }
 
 // for debugging purposes add individual field arrows
