@@ -1,3 +1,9 @@
+// mouse object
+var mouse = {
+	x:0,
+	y:0
+};
+
 // field arrow consctuctor
 function Field_Arrow(x, y) {
 	this.x = x;
@@ -159,61 +165,102 @@ function Charge(x, y, q) {
 
 //button
 
-function Button(x1, y1, x2, y2, fillColor, lineColor){
-	this.x1 = x1;
-	this.y1 = y1;
-	this.x2 = x2;
-	this.y2 = y2;
-	this.fillColor = fillColor;
-	this.lineColor = lineColor;
-
-	this.draw = function(c){
-		c.beginPath();
-		c.moveTo(this.x1, this.y1);
-		c.lineTo(this.x2, this.y1);
-		c.lineTo(this.x2, this.y2);
-		c.lineTo(this.x1, this.y2);
-		c.lineTo(this.x1, this.y1);
-		c.fillStyle = this.fillColor;
-		c.fill();
-		c.strokeStyle = this.lineColor;
-		c.stroke();
-	}
-
-}
-
 
 // canvas and question object consctuctor
 
 function Question(canvasId){
+	// canvas
 	this.canvasId = canvasId;
 	this.canvas = document.getElementById(canvasId);
 	this.context = this.canvas.getContext("2d");
+
+	// charge
 	this.buttonList = [];
+
+	// button
 	this.chargeList = [];
+
+	// field arrows
 	this.arrowList = [];
+	this.showField = false;
+	this.rows;
+	this.columns;
 
+	// methods
 	this.onCreate = function(){
+
+		// get canvas width equal to window width
 		this.canvas.width = window.innerWidth * 0.993;
-		this.canvas.height = window.innerHeight * 0.993;
+		this.canvas.height = window.innerHeight * 0.90;
 
-		this.buttonList.push(new Button(0, this.canvas.height * 0.9, this.canvas.width / 3, 
-			this.canvas.height, 'blue', 'red'));
+		// get rows and columns based on width and height
+		this.rows = Math.floor(this.canvas.width * 0.9 / 25);
+		this.columns = Math.floor(this.canvas.width / 25);
 
-		this.buttonList.push(new Button(this.canvas.width / 3, this.canvas.height * 0.9, 
-			this.canvas.width / 3 * 2, this.canvas.height, 'green', 'red'));
+		this.update();
+	}
 
-		this.buttonList.push(new Button(this.canvas.width / 3 * 2, this.canvas.height * 0.9, 
-			this.canvas.width, this.canvas.height, 'blue', 'red'));
+	this.update = function(){
+		// reset the field
+		this.context.clearRect(0,0,innerWidth, innerHeight);
 
-		this.buttonList[0].draw(this.context);
-		this.buttonList[1].draw(this.context);
-		this.buttonList[2].draw(this.context);
+		// create arrows
+		this.createArrows();
+
+		// draw arrows
+		if(this.showField == true){
+			this.drawArrows();
+		}
+	}
+
+	this.createCharges = function(){
 
 	}
 
+	// Arrow Field
 
-}
+	this.createArrows = function(){
+		var arrowX, arrowY;
+
+		for(var i = 0; i < this.columns * this.rows; i++){
+			// find x
+			arrowX = ((i + this.columns) % this.columns) * this.canvas.width / 
+				this.columns + this.canvas.width / (2 * this.columns);
+
+			// find y
+			arrowY = Math.floor(i / this.columns) * this.canvas.height / this.rows + 
+				this.canvas.width / (2 * this.rows);
+
+			// push new arrow
+			this.arrowList.push(new Field_Arrow(arrowX,arrowY));
+		}
+	}
+
+	this.drawArrows = function(){
+		var arrowListLength = this.arrowList.length;
+		for(var i = 0; i < arrowListLength; i++){
+			this.arrowList[i].draw(this.context);
+		}
+	}
+
+	this.toggleField = function(){
+		this.showField = !this.showField;
+		console.log(this.showField);
+		this.update();
+	}
+	
+} // question
 
 var quest = new Question('canvasOne');
 quest.onCreate();
+
+/*
+
+Question Types
+
+1: a single or two charges are placed on the field and 
+the user must find where the charge is in a certian direction
+
+2: two negative charges are places on the field 
+and the user must find where the field magnidude is zero
+*/
