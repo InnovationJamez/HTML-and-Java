@@ -1,7 +1,7 @@
 function Canvas_Object(canvasId) {
 	this.canvasId = document.querySelector('canvas');
-	this.canvasId.width = window.innerWidth * 0.8;
-	this.canvasId.height = window.innerHeight * 0.8;
+	this.canvasId.width = window.innerWidth * 0.99;
+	this.canvasId.height = window.innerHeight * 0.99;
 	this.context = this.canvasId.getContext("2d");
 
 	// for storing the charges
@@ -38,7 +38,6 @@ function Canvas_Object(canvasId) {
 		this.numArrows = this.arrowList.length;
 
 		for(var i = 0; i < this.numArrows; i++) {
-			console.log(this.arrowList[i]);
 			this.arrowList[i].update(this.chargeList);
 			this.arrowList[i].draw(this.context);
 		}
@@ -47,7 +46,17 @@ function Canvas_Object(canvasId) {
 
 	// create charge
 
+	this.addCharge = function(x, y, q) {
+		this.chargeList.push(new Charge(x, y, q));
+
+		this.updateArrows();
+	}
+
 	// update charges
+
+	this.updateCharges = function() {
+		this.numcharges = this.chargeList.length;
+	}
 
 
 	// create probe
