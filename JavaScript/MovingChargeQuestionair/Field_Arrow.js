@@ -11,7 +11,7 @@ function Charge(x, y, q) {
 
 	this.draw = function(c){
 		c.beginPath();
-		c.arc(this.x,this.y,10,Math.PI*2,false);
+		c.arc(this.x, this.y, 10, Math.PI*2, false);
 		c.strokeStyle = 'rgb(' + this.x + ',' + 0 + ',' + this.y + ', 1)';
 		c.fillStyle = (q > 0) ? 'blue' : 'red';
 		c.fill();
