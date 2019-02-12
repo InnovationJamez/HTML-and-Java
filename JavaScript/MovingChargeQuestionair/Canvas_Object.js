@@ -1,10 +1,13 @@
 function Canvas_Object(canvasId) {
 	this.canvasId = canvasId;
-	this.context = canvasId.getContext('2d');
+	this.canvasId.width = window.innerWidth;
+	this.canvasId.height = window.innerHeight;
+	this.context = this.canvasId.getContext('2d');
+
+	console.log("hi");
 
 	this.chargeList = [];
 	this.numCharges = 0;
-
 	this.arrowList = [];
 	this.numArrows = 0;
 
@@ -25,15 +28,9 @@ function Canvas_Object(canvasId) {
 
 	// update probe
 
-	// instintiate the canvas
-	this.onStart = function() {
-		canvasId.width = window.innerWidth;
-		canvasId.height = window.innerHeight;
-	}
-
 
 	// update the canvas
 }
 
-var canvasOne = new Canvas_Object("canvasOne");
-canvasOne.onstart();
+var canOne = new Canvas_Object("canvasOne");
+console.log("hi");
