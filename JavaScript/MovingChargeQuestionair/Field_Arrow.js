@@ -4,10 +4,24 @@ var mouse = {
 }
 
 
-function Charge(x, y, q) {
+// function for getting sum of array
+
+function getSum(numList) {
+	var sum = 0;
+	length = numList.length;
+	for(var i = 0; i < length; i++){
+		sum += numList[i];
+	}
+	return sum;
+}
+
+function Charge(x, y, q, height) {
 	this.x = x;
-	this.y = y;
+	this.y = height - y;
 	this.q = q;
+
+	this.update = function() {
+	}
 
 	this.draw = function(c){
 		c.beginPath();
@@ -19,7 +33,7 @@ function Charge(x, y, q) {
 		c.stroke();
 
 		c.beginPath
-		c.MoveTo(this.x - 8, this.y);
+		c.moveTo(this.x - 8, this.y);
 		c.lineTo(this.x + 8, this.y);
 		if(this.q > 0){
 			c.moveTo(this.x, this.y - 8);
@@ -31,9 +45,20 @@ function Charge(x, y, q) {
 
 }
 
-function Field_Arrow(x, y) {
+function Field_Arrow(x, y, height) {
 	this.x = x;
-	this.y = y;
+	this.y = height - y;
+
+	this.angle = 0;
+	this.xField = [];
+	this.xFieldSum = 0;
+	this.yField = [];
+	this.yFieldSum = 0;
+	this.magnitudeField = 0;
+	this.k = 9 * 10 ** 9;
+	this.len = 10;
+	this.xComp = 0;
+	this.yComp = 0;
 
 	this.draw = function(c){
 		c.beginPath();
@@ -55,70 +80,52 @@ function Field_Arrow(x, y) {
 	}
 }
 
-Field_Arrow.prototype = {
-	angle : 0,
-	xField : [],
-	xFieldSum : 0,
-	yField : [],
-	yFieldSum : 0,
-	magnitudeField : 0,
-	k:9 * 10 ** 9,
-	len:10
-};
-
-Field_Arrow.prototype.getComponents = function(chargeList) {
-	var tempAngle;
-	var xDis = 0; // x displacement
-	var yDis = 0; // y displacement
-	var hDis = 0; // hypotenuse 
-	var i = 0;
-	var fieldMag = 0;
-	var tempAngle = 0;
-	numCharges = chargeList.length;
-	var xComp = 0;
-	var yComp = 0;
-
-	xDis = this.x - chargeList[i].x;
-	yDis = this.y - chargeList[i].y;
-	hDis = Math.sqrt(xDis ** 2 + yDis ** 2);
+Field_Arrow.prototype.getComponents = function(chargeList, i) {
+	this.magnitudeField = 0;
+	this.xComp = 0;
+	this.yComp = 0;
 
 	// find the angle from arrow to charge
 
 	if(chargeList[i].x > this.x){
-		tempAngle = 180 - (Math.atan(yDis / xDis) * 180 / Math.PI);
+		this.angle = 180 - (Math.atan((this.y - chargeList[i].y) / (this.x - chargeList[i].x)) * 180 / Math.PI);
 	}
 	else{
-		tempAngle = 360 - (Math.atan(yDis / xDis) * 180 / Math.PI);
+		this.angle = 360 - (Math.atan((this.y - chargeList[i].y) / (this.x - chargeList[i].x)) * 180 / Math.PI);
 	}
+
+	this.angle = this.angle % 360;
 	
 
 	// find the magnitude of the field
-	fieldMag = (this.k * chargeList[i].q) / (hDis ** 2);
+	this.fieldMag = (this.k * chargeList[i].q) / (Math.sqrt((this.x - chargeList[i].x) ** 2 + (this.y - chargeList[i].y) ** 2) ** 2);
 
 	// get the a and y components of the field vector
 
-	if(tempAngle <= 90) {
-		xComp = Math.cos(tempAngle * Math.PI / 180) * fieldMag;
-		yComp = Math.sin(tempAngle * Math.PI / 180) * fieldMag;
+	if(this.angle <= 90) {
+		this.xComp = Math.cos(this.angle * Math.PI / 180) * this.fieldMag;
+		this.yComp = Math.sin(this.angle * Math.PI / 180) * this.fieldMag;
 	}
-	else if(tempAngle > 90 || tempAngle <= 180) {
-		xComp = -Math.cos((180 - tempAngle) * Math.PI / 180) * fieldMag;
-		yComp = Math.sin((180 - tempAngle) * Math.PI / 180) * fieldMag;
+	else if(this.angle > 90 || this.angle <= 180) {
+		this.xComp = -Math.cos((180 - this.angle) * Math.PI / 180) * this.fieldMag;
+		this.yComp = Math.sin((180 - this.angle) * Math.PI / 180) * this.fieldMag;
 	}
-	else if(tempAngle > 180 || tempAngle <= 270) {
-		xComp = Math.sin((270 - tempAngle) * Math.PI / 180) * fieldMag;
-		yComp = Math.cos((270 - tempAngle) * Math.PI / 180) * fieldMag;
+	else if(this.angle > 180 || this.angle <= 270) {
+		this.xComp = Math.sin((270 - this.angle) * Math.PI / 180) * this.fieldMag;
+		this.yComp = Math.cos((270 - this.angle) * Math.PI / 180) * this.fieldMag;
 	}
 	else {
-		xComp = Math.sin((360 - tempAngle) * Math.PI / 180) * fieldMag;
-		yComp = Math.cos((360 - tempAngle) * Math.PI / 180) * fieldMag;
+		this.xComp = Math.sin((360 - this.angle) * Math.PI / 180) * this.fieldMag;
+		this.yComp = Math.cos((360 - this.angle) * Math.PI / 180) * this.fieldMag;
 	}
 
 	// push the vallues
 
-	this.xField.push(xComp);
-	this.yField.push(yComp);
+	this.xField.push(this.xComp);
+	this.yField.push(this.yComp);
 }
+
+// field arrow object
 
 Field_Arrow.prototype.getComponentSum = function() {
 	if(this.xField.length > 0 && this.yField.length > 0) {
@@ -148,15 +155,26 @@ Field_Arrow.prototype.update = function(chargeList) {
 	var chargeListLength = chargeList.length;
 
 	for(var i = 0; i < chargeListLength; i++){
-		this.getComponents();
+		this.getComponents(chargeList, i);
 	}
 
 	this.getComponentSum();
 }
 
-function Field_Probe(x, y) {
+function Field_Probe(x, y, height) {
 	this.x = x;
-	this.y = y;
+	this.y = height - y;
+
+	this.angle = 0;
+	this.xField = [];
+	this.xFieldSum = 0;
+	this.yField = [];
+	this.yFieldSum = 0;
+	this.magnitudeField = 0;
+	this.k = 9 * 10 ** 9;
+	this.len = 10;
+	this.xComp = 0;
+	this.yComp = 0;
 
 	this.draw = function(){
 		c.beginPath();

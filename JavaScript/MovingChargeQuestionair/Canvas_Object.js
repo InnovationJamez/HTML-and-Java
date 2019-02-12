@@ -28,8 +28,14 @@ function Canvas_Object(canvasId) {
 			this.columnNum + this.canvasId.width / (2 * this.columnNum);
 		arrowY = Math.floor(i / this.columnNum) * this.canvasId.height / 
 			this.rowNum + this.canvasId.height / (2 * this.rowNum);
-		this.arrowList.push(new Field_Arrow(arrowX,arrowY));
+		this.arrowList.push(new Field_Arrow(arrowX, arrowY, this.canvasId.height));
 		}		
+	}
+
+	// add on arrow to specified location
+
+	this.addArrow = function(x, y) {
+		this.arrowList.push(new Field_Arrow(x, y, this.canvasId.height));
 	}
 
 	// update arrows
@@ -47,15 +53,18 @@ function Canvas_Object(canvasId) {
 	// create charge
 
 	this.addCharge = function(x, y, q) {
-		this.chargeList.push(new Charge(x, y, q));
-
-		this.updateArrows();
+		this.chargeList.push(new Charge(x, y, q, this.canvasId.height));
 	}
 
 	// update charges
 
 	this.updateCharges = function() {
 		this.numcharges = this.chargeList.length;
+
+		for(var i = 0; i < this.numcharges; i++){
+			this.chargeList[i].update();
+			this.chargeList[i].draw(this.context);
+		}
 	}
 
 
@@ -65,8 +74,18 @@ function Canvas_Object(canvasId) {
 
 
 	// update the canvas
+
+	this.updateCanvas = function() {
+		this.context.clearRect(0,0,innerWidth, innerHeight);
+
+		this.updateArrows();
+
+		this.updateCharges();
+	}
 }
 
 var canOne = new Canvas_Object("canvasOne");
 canOne.createArrows();
-canOne.updateArrows();
+canOne.addCharge(100, 200, -2);
+canOne.addCharge(200, 400, 2);
+canOne.updateCanvas();
