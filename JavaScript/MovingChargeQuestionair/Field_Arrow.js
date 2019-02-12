@@ -21,7 +21,7 @@ function Charge(x, y, q, height) {
 	this.q = q;
 
 	this.update = function() {
-	}
+	};
 
 	this.draw = function(c){
 		c.beginPath();
@@ -41,7 +41,7 @@ function Charge(x, y, q, height) {
 		}
 		c.strokeStyle = "black";
 		c.stroke;
-	}
+	};
 
 }
 
@@ -77,7 +77,7 @@ function Field_Arrow(x, y, height) {
 		c.fillStyle = 'black';
 		c.fill();
 		c.stroke();
-	}
+	};
 }
 
 Field_Arrow.prototype.getComponents = function(chargeList, i) {
@@ -123,7 +123,7 @@ Field_Arrow.prototype.getComponents = function(chargeList, i) {
 
 	this.xField.push(this.xComp);
 	this.yField.push(this.yComp);
-}
+};
 
 // field arrow object
 
@@ -140,7 +140,8 @@ Field_Arrow.prototype.getComponentSum = function() {
 			this.angle = 180 + Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
 		}
 
-		this.len = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2) / 300000 + 5;
+		this.magnitudeField = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2)
+		this.len = this.magnitudeField / 300000 + 5;
 		this.len = (this.len > 20) ? 20 : this.len;
 
 	}
@@ -149,7 +150,7 @@ Field_Arrow.prototype.getComponentSum = function() {
 		this.angle = 0;
 		this.len = 5;
 	}
-}
+};
 
 Field_Arrow.prototype.update = function(chargeList) {
 	var chargeListLength = chargeList.length;
@@ -176,17 +177,29 @@ function Field_Probe(x, y, height) {
 	this.xComp = 0;
 	this.yComp = 0;
 
-	this.draw = function(){
+	this.draw = function(c){
 		c.beginPath();
 		c.arc(this.x,this.y,10,Math.PI*2,false);
-		c.strokeStyle = 'rgb(' + this.x + ',' + 0 + ',' + this.y + ', 1)';
-		c.fillStyle = (q > 0) ? 'blue' : 'red';
+		c.strokeStyle = 'black';
+		c.fillStyle = 'green';
 		c.fill();
-		c.strokeStyle = (q > 0) ? 'blue' : 'red';
+		c.strokeStyle = 'green';
 		c.stroke();
-	}
+
+		c.beginPath();
+		c.moveTo(this.x - 5, this.y - 5);
+		c.lineTo(this.x + 5, this.y + 5);
+		c.moveTo(this.x - 5, this.y + 5);
+		c.lineTo(this.x + 5, this.y - 5);
+		c.strokeStyle = 'black';
+		c.stroke();
+	};
+
+	this.getData = function() {
+		console.log(this.magnitudeField + " " + this.angle);
+	};
 
 }
 
-Field_Probe.prototype = new Field_Arrow();
+Field_Probe.prototype = new Field_Arrow(); 
 

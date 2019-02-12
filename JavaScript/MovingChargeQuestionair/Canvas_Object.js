@@ -70,22 +70,52 @@ function Canvas_Object(canvasId) {
 
 	// create probe
 
+	this.addProbe = function(x, y) {
+		this.probeList.push(new Field_Probe(x, y, this.canvasId.height));
+	}
+
 	// update probe
+
+	this.updateProbes = function() {
+		this.numbProbes = this.probeList.length;
+
+		for(var i = 0; i < this.numbProbes; i++) {
+			this.probeList[i].update(this.chargeList);
+			this.probeList[i].draw(this.context);
+			this.probeList[i].getData();
+		}
+
+	}
+
+	// create buttons
+	this.createButtons = function(qType, angle){
+		this.questionBox = new Text_Box(this.canvasId.width * 0.05, this.canvasId.height * 0.05, 
+			this.canvasId.width * 0.95, this.canvasId.height * 0.2, qType, angle);
+	}
 
 
 	// update the canvas
+
+	this.drawQuestionBox = function() {
+		this.questionBox.draw(this.context);
+	}
 
 	this.updateCanvas = function() {
 		this.context.clearRect(0,0,innerWidth, innerHeight);
 
 		this.updateArrows();
 
-		this.updateCharges();
+		this.updateCharges(); 
+
+		this.updateProbes();
 	}
 }
 
 var canOne = new Canvas_Object("canvasOne");
 canOne.createArrows();
-canOne.addCharge(100, 200, -2);
-canOne.addCharge(200, 400, 2);
+canOne.addCharge(100, 200, 2);
+canOne.addCharge(100, 400, 2);
+canOne.addProbe(100, 300);
 canOne.updateCanvas();
+canOne.createButtons(0, 90);
+canOne.drawQuestionBox();
