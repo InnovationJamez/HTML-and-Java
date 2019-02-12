@@ -28,6 +28,7 @@ function Charge(x, y, q) {
 		c.strokeStyle = "black";
 		c.stroke;
 	}
+
 }
 
 function Field_Arrow(x, y) {
@@ -65,17 +66,7 @@ Field_Arrow.prototype = {
 	len:10
 };
 
-Field_Probe.prototype.update = function(chargeList) {
-
-	var chargeListLength = chargeList.length;
-
-	for(var i = 0; i < chargeListLength; i++){
-		this.getComponents();
-	}
-
-}
-
-Field_Probe.prototype.getComponents = function(chargeList) {
+Field_Arrow.prototype.getComponents = function(chargeList) {
 	var tempAngle;
 	var xDis = 0; // x displacement
 	var yDis = 0; // y displacement
@@ -129,7 +120,7 @@ Field_Probe.prototype.getComponents = function(chargeList) {
 	this.yField.push(yComp);
 }
 
-Field_Probe.prototype.getComponentSum = function() {
+Field_Arrow.prototype.getComponentSum = function() {
 	if(this.xField.length > 0 && this.yField.length > 0) {
 
 		this.xFieldSum = getSum(this.xField);
@@ -151,6 +142,16 @@ Field_Probe.prototype.getComponentSum = function() {
 		this.angle = 0;
 		this.len = 5;
 	}
+}
+
+Field_Arrow.prototype.update = function(chargeList) {
+	var chargeListLength = chargeList.length;
+
+	for(var i = 0; i < chargeListLength; i++){
+		this.getComponents();
+	}
+
+	this.getComponentSum();
 }
 
 function Field_Probe(x, y) {
