@@ -1,9 +1,16 @@
 questionText = [
 	"Find the point where the electric field is ",
-	"Find the point where the angle of the electric field is "
+	"Find the point where the angle of the electric field is ",
+	"Submitt",
+	"Show field",
+	"Main menu",
+	"Answer Questions",
+	"Free Play",
+	"Add charge",
+	"Remove charge"
 ];
 
-function Text_Box(x1, y1, x2, y2, questionNumber, targetAngle) {
+function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 	this.x1 = x1;
 	this.y1 = y1;
 	this.x2 = x2;
@@ -11,7 +18,7 @@ function Text_Box(x1, y1, x2, y2, questionNumber, targetAngle) {
 	this.questionNumber = questionNumber;
 	this.targetAngle = targetAngle;
 	this.xPos = x2 - (x2 - x1) / 2;
-	this.yPos = y2 - (y2 - y1) / 2;
+	this.yPos = y2 - (y2 - y1) / 2 + 5;
 
 	this.checkClick = function(){
 		if(mouse.x > this.x1 && mouse.x < this.x2 && 
@@ -36,8 +43,13 @@ function Text_Box(x1, y1, x2, y2, questionNumber, targetAngle) {
 
 		c.font = '20px Arial';
 		c.textAlign = "center";
-		c.strokeText(questionText[this.questionNumber] + 
-			this.targetAngle, this.xPos, this.yPos);
+		if(this.questionNumber > 1){
+			c.strokeText(questionText[this.questionNumber], this.xPos, this.yPos);
+		}
+		else{
+			c.strokeText(questionText[this.questionNumber] + 
+				this.targetAngle, this.xPos, this.yPos);
+		}
 	}
 
 }

@@ -20,6 +20,9 @@ function Canvas_Object(canvasId) {
 	this.probeList = [];
 	this.numbProbes = 0;
 
+	// for buttons
+	this.buttonList = [];
+
 	// create arrows
 	this.createArrows = function() {
 		var arrowX, arrowY;
@@ -87,17 +90,56 @@ function Canvas_Object(canvasId) {
 
 	}
 
+	// create button
+	this.addButton = function(x1, y1, x2, y2, qType, angle){
+		this.buttonList.push(new Text_Box(x1, y1, x2, y2, qType, angle));
+	}
+
 	// create buttons
-	this.createButtons = function(qType, angle){
-		this.questionBox = new Text_Box(this.canvasId.width * 0.05, this.canvasId.height * 0.05, 
-			this.canvasId.width * 0.95, this.canvasId.height * 0.2, qType, angle);
+	this.createButtons = function() {
+		// question bar : 0
+		this.addButton(this.canvasId.width * 0.05, this.canvasId.height * 0.03, 
+			this.canvasId.width * 0.95, this.canvasId.height * 0.1, 0, 0);
+
+		// submitt : 1
+		this.addButton(this.canvasId.width * 0.01, this.canvasId.height * 0.95, 
+			this.canvasId.width * 0.33, this.canvasId.height * 0.999, 2);
+
+		// show field : 2
+		this.addButton(this.canvasId.width * 0.33, this.canvasId.height * 0.95, 
+			this.canvasId.width * 0.66, this.canvasId.height * 0.999, 3);
+
+		// main menue : 3
+		this.addButton(this.canvasId.width * 0.66, this.canvasId.height * 0.95, 
+			this.canvasId.width * 0.99, this.canvasId.height * 0.999, 4);
+
+		// answer questions : 4
+		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.40, 
+			this.canvasId.width * 0.80, this.canvasId.height * 0.50, 5);
+
+		// freeplay : 5
+		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.60, 
+			this.canvasId.width * 0.80, this.canvasId.height * 0.70, 6);
+
+		// add charge : 6
+		this.addButton(this.canvasId.width * 0.01, this.canvasId.height * 0.95, 
+			this.canvasId.width * 0.33, this.canvasId.height * 0.999, 7);
+
+		// remove charge : 7
+		this.addButton(this.canvasId.width * 0.33, this.canvasId.height * 0.95, 
+			this.canvasId.width * 0.66, this.canvasId.height * 0.999, 8);
 	}
 
 
 	// update the canvas
 
 	this.drawQuestionBox = function() {
-		this.questionBox.draw(this.context);
+		this.buttonList[0].draw(this.context);
+		this.buttonList[1].draw(this.context);
+		this.buttonList[2].draw(this.context);
+		this.buttonList[3].draw(this.context);
+		this.buttonList[4].draw(this.context);
+		this.buttonList[5].draw(this.context);
 	}
 
 	this.updateCanvas = function() {
@@ -117,5 +159,5 @@ canOne.addCharge(100, 200, 2);
 canOne.addCharge(100, 400, 2);
 canOne.addProbe(100, 300);
 canOne.updateCanvas();
-canOne.createButtons(0, 90);
+canOne.createButtons();
 canOne.drawQuestionBox();
