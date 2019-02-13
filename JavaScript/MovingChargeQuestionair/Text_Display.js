@@ -45,9 +45,11 @@ function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 		c.lineTo(this.x2, this.y2);
 		c.lineTo(this.x1, this.y2);
 		c.lineTo(this.x1, this.y1);
-		c.stroke();
 		c.fillStyle = 'white';
 		c.fill();
+		c.fillStyle = 'rgba(50,50,50,0.5)';
+		c.fill();
+		c.stroke();
 
 		c.font = '20px Arial';
 		c.textAlign = "center";

@@ -28,10 +28,19 @@ game modes
 function Question(){
 	this.mode = 0;
 	this.canvas = new Canvas_Object("canvasOne");
+	this.drawArrows = false;
 
 	this.start = function(){
 		this.canvas.createButtons();
+		this.canvas.createArrows();
 	};
+
+	this.addRandomCharge = function(){
+		var charge = (Math.radnom() - 0.5) * 2;
+		var xPos = Math.random() * canvas.canvasId.width;
+		var yPos = Math.random() * canvas.canvasId.height;
+		this.canvas.addCharge(xPos, yPos, charge);
+	}
 
 	this.update = function(){
 		this.canvas.context.clearRect(0,0,innerWidth, innerHeight);
@@ -39,6 +48,9 @@ function Question(){
 	};
 
 	this.draw = function(){
+		if(this.mode == 1 || this.mode == 2 && this.drawArrows){
+			this.canvas.updateArrows();
+		}
 		this.canvas.drawQuestionBox(this.mode);
 
 	};
@@ -85,7 +97,8 @@ question.canvas.canvasId.addEventListener('click', function(event){
 
 			}
 			else if(question.canvas.buttonList[2].checkClick() && question.canvas.buttonList[4].drawn){
-				
+				question.drawArrows = !question.drawArrows;
+				question.update();
 			}
 			else if(question.canvas.buttonList[3].checkClick() && question.canvas.buttonList[4].drawn){
 				question.mode = 0;

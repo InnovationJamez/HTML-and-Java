@@ -59,6 +59,12 @@ function Canvas_Object(canvasId) {
 		this.chargeList.push(new Charge(x, y, q, this.canvasId.height));
 	}
 
+	// remove charge
+
+	this.removeCharge = function(){
+		this.chargeList.pop();
+	}
+
 	// update charges
 
 	this.updateCharges = function() {
@@ -130,6 +136,12 @@ function Canvas_Object(canvasId) {
 			this.canvasId.width * 0.66, this.canvasId.height * 0.999, 8);
 	}
 
+	// reset canvas
+
+	this.resetCanvas = function(){
+		this.chargeList = [];
+		this.probeList = [];
+	}
 
 	// update the canvas
 
