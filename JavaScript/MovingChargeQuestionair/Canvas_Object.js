@@ -164,6 +164,7 @@ function Canvas_Object(canvasId) {
 	}
 }
 
+/*
 var canOne = new Canvas_Object("canvasOne");
 canOne.createArrows();
 canOne.addCharge(100, 200, 2);
@@ -171,4 +172,5 @@ canOne.addCharge(100, 400, 2);
 canOne.addProbe(100, 300);
 canOne.updateCanvas();
 canOne.createButtons();
-canOne.drawQuestionBox(2);
+canOne.drawQuestionBox(1);
+*/
