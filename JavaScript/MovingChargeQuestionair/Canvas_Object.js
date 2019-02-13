@@ -133,13 +133,24 @@ function Canvas_Object(canvasId) {
 
 	// update the canvas
 
-	this.drawQuestionBox = function() {
-		this.buttonList[0].draw(this.context);
-		this.buttonList[1].draw(this.context);
-		this.buttonList[2].draw(this.context);
-		this.buttonList[3].draw(this.context);
-		this.buttonList[4].draw(this.context);
-		this.buttonList[5].draw(this.context);
+	this.drawQuestionBox = function(value) {
+		switch(value){
+			case 0: // main menue
+				this.buttonList[4].draw(this.context);
+				this.buttonList[5].draw(this.context);
+				break;
+			case 1: // free play
+				this.buttonList[6].draw(this.context);
+				this.buttonList[7].draw(this.context);
+				this.buttonList[3].draw(this.context);
+				break;
+			case 2: // question mode
+				this.buttonList[0].draw(this.context);
+				this.buttonList[1].draw(this.context);
+				this.buttonList[2].draw(this.context);
+				this.buttonList[3].draw(this.context);
+				break;
+		}
 	}
 
 	this.updateCanvas = function() {
@@ -160,4 +171,4 @@ canOne.addCharge(100, 400, 2);
 canOne.addProbe(100, 300);
 canOne.updateCanvas();
 canOne.createButtons();
-canOne.drawQuestionBox();
+canOne.drawQuestionBox(2);

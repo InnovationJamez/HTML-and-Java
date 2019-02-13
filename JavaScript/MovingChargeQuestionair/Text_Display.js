@@ -20,6 +20,9 @@ function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 	this.xPos = x2 - (x2 - x1) / 2;
 	this.yPos = y2 - (y2 - y1) / 2 + 5;
 
+	//record if the item is drawn
+	this.drawn = true;
+
 	this.checkClick = function(){
 		if(mouse.x > this.x1 && mouse.x < this.x2 && 
 			mouse.y > this.x2 && mouse.y < this.y2){
@@ -28,6 +31,11 @@ function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 		else{
 			return false;
 		}
+	}
+
+	this.update = function(questionNumber, targetAngle) {
+		this.questionNumber = questionNumber;
+		this.targetAngle = targetAngle;
 	}
 
 	this.draw = function(c){
@@ -50,6 +58,12 @@ function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 			c.strokeText(questionText[this.questionNumber] + 
 				this.targetAngle, this.xPos, this.yPos);
 		}
+
+		this.drawn = true;
+	}
+
+	this.revert = function(){
+		this.drawn = false;
 	}
 
 }
