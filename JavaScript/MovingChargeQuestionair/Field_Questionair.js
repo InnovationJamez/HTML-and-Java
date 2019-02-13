@@ -36,22 +36,31 @@ function Question(){
 	};
 
 	this.addRandomCharge = function(){
-		var charge = (Math.radnom() - 0.5) * 2;
-		var xPos = Math.random() * canvas.canvasId.width;
-		var yPos = Math.random() * canvas.canvasId.height;
+		var charge = Math.random() * 2 + 0.25;
+		charge *= (Math.random() - 0.5 > 0) ? 1 : -1;
+
+		var xPos = Math.random() * (this.canvas.canvasId.width * 0.6) + 
+			this.canvas.canvasId.width * 0.20;
+
+		var yPos = Math.random() * (this.canvas.canvasId.height * 0.6) + 
+			this.canvas.canvasId.height * 0.20;
+
 		this.canvas.addCharge(xPos, yPos, charge);
+		this.update();
 	}
 
 	this.update = function(){
 		this.canvas.context.clearRect(0,0,innerWidth, innerHeight);
+		if(this.mode == 1 || this.mode == 2 && this.drawArrows){
+			this.canvas.updateArrows();
+		}
 		this.draw();
 	};
 
 	this.draw = function(){
-		if(this.mode == 1 || this.mode == 2 && this.drawArrows){
-			this.canvas.updateArrows();
-		}
 		this.canvas.drawQuestionBox(this.mode);
+
+		this.canvas.updateCharges();
 
 	};
 
@@ -80,13 +89,15 @@ question.canvas.canvasId.addEventListener('click', function(event){
 		case 1:
 			if(question.canvas.buttonList[3].checkClick() && question.canvas.buttonList[4].drawn){
 				question.mode = 0;
+				question.canvas.resetCanvas();
 				question.update();
 			}
 			else if(question.canvas.buttonList[6].checkClick() && question.canvas.buttonList[4].drawn){
-
+				question.addRandomCharge();
 			}
 			else if(question.canvas.buttonList[7].checkClick() && question.canvas.buttonList[4].drawn){
-
+				question.canvas.removeCharge();
+				question.update();
 			}
 			break;
 		case 2:
@@ -102,9 +113,18 @@ question.canvas.canvasId.addEventListener('click', function(event){
 			}
 			else if(question.canvas.buttonList[3].checkClick() && question.canvas.buttonList[4].drawn){
 				question.mode = 0;
+				question.canvas.resetCanvas();
 				question.update();
 			}
 			break;
 	}
 
+});
+
+question.canvas.canvasId.addEventListener('onmousemove', function(event){
+	mouse.x = event.x;
+	mouse.y = event.y;
+
+	question.update();
+	console.log("update");
 });

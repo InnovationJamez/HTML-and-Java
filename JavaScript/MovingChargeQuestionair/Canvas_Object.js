@@ -141,6 +141,12 @@ function Canvas_Object(canvasId) {
 	this.resetCanvas = function(){
 		this.chargeList = [];
 		this.probeList = [];
+
+		var buttonListLength = this.buttonList.length;
+
+		for(var i = 0; i < buttonListLength; i++){
+			this.buttonList[i].drawn = false;
+		}
 	}
 
 	// update the canvas

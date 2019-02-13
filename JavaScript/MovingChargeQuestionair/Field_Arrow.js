@@ -153,9 +153,13 @@ Field_Arrow.prototype.getComponentSum = function() {
 };
 
 Field_Arrow.prototype.update = function(chargeList) {
-	var chargeListLength = chargeList.length;
 
-	for(var i = 0; i < chargeListLength; i++){
+	var numCharges = chargeList.length;
+
+	this.xField = [];
+	this.yField = [];
+
+	for(var i = 0; i < numCharges; i++){
 		this.getComponents(chargeList, i);
 	}
 
