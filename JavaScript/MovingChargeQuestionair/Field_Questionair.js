@@ -54,6 +54,7 @@ function Question(){
 		if(this.mode == 1 || this.mode == 2 && this.drawArrows){
 			this.canvas.updateArrows();
 		}
+		this.canvas.updateProbes();
 		this.draw();
 	};
 
@@ -64,6 +65,12 @@ function Question(){
 
 	};
 
+	this.onQuestionModeStart = function(){
+		this.addRandomCharge();
+		this.addRandomCharge();
+		this.canvas.addProbe(this.canvas.canvasId.width / 2, 
+			this.canvas.canvasId.height / 2);
+	};
 
 }
 
@@ -79,6 +86,7 @@ question.canvas.canvasId.addEventListener('click', function(event){
 		case 0:
 			if(question.canvas.buttonList[4].checkClick() && question.canvas.buttonList[4].drawn){
 				question.mode = 2;
+				question.onQuestionModeStart();
 				question.update();
 			}
 			else if(question.canvas.buttonList[5].checkClick() && question.canvas.buttonList[5].drawn){
@@ -121,10 +129,66 @@ question.canvas.canvasId.addEventListener('click', function(event){
 
 });
 
-question.canvas.canvasId.addEventListener('onmousemove', function(event){
+question.canvas.canvasId.addEventListener('mousedown', function(event){
 	mouse.x = event.x;
 	mouse.y = event.y;
 
-	question.update();
-	console.log("update");
+	question.canvas.numbProbes = question.canvas.probeList.length;
+
+	for(var i = 0; i < question.canvas.numbProbes; i++){
+		question.canvas.probeList[i].checkMouse();
+	}
+
+	if(question.mode == 1){
+		question.canvas.numCharges = question.canvas.chargeList.length;
+
+		for(var i = 0; i < question.canvas.numCharges; i++){
+			question.canvas.chargeList[i].checkMouse();
+		}		
+	}
+
 });
+
+question.canvas.canvasId.addEventListener('mouseup', function(event){
+	mouse.x = event.x;
+	mouse.y = event.y;
+
+	question.canvas.numbProbes = question.canvas.probeList.length;
+
+	for(var i = 0; i < question.canvas.numbProbes; i++){
+		question.canvas.probeList[i].selected = false;
+	}
+
+	question.canvas.numCharges = question.canvas.chargeList.length;
+
+	for(var i = 0; i < question.canvas.numCharges; i++){
+		question.canvas.chargeList[i].selected = false;
+	}		
+
+
+});
+
+question.canvas.canvasId.addEventListener('mousemove', function(event){
+	mouse.x = event.x;
+	mouse.y = event.y;
+
+	question.canvas.numbProbes = question.canvas.probeList.length;
+
+	for(var i = 0; i < question.canvas.numbProbes; i++){
+		question.canvas.probeList[i].followMouse();
+	}
+
+	if(question.mode == 1){
+		question.canvas.numCharges = question.canvas.chargeList.length;
+
+		for(var i = 0; i < question.canvas.numCharges; i++){
+			question.canvas.chargeList[i].followMouse();
+		}		
+	}
+
+	question.update();
+});
+
+
+
+

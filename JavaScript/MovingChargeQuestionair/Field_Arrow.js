@@ -3,7 +3,6 @@ var mouse = {
 	y : 0
 }
 
-
 // function for getting sum of array
 
 function getSum(numList) {
@@ -32,7 +31,7 @@ function Charge(x, y, q, height) {
 		c.strokeStyle = (q > 0) ? 'blue' : 'red';
 		c.stroke();
 
-		c.beginPath
+		c.beginPath();
 		c.moveTo(this.x - 8, this.y);
 		c.lineTo(this.x + 8, this.y);
 		if(this.q > 0){
@@ -40,7 +39,22 @@ function Charge(x, y, q, height) {
 			c.lineTo(this.x, this.y + 8);	
 		}
 		c.strokeStyle = "black";
-		c.stroke;
+		c.stroke();
+	};
+
+	this.followMouse = function(){
+		if(this.selected){
+			this.x = mouse.x;
+			this.y = mouse.y;		
+		}
+
+	};
+
+	this.checkMouse = function(){
+		if(Math.abs(this.x - mouse.x) < 20 && 
+			Math.abs(this.y - mouse.y) < 20){
+			this.selected = true;
+		}
 	};
 
 }
@@ -180,6 +194,7 @@ function Field_Probe(x, y, height) {
 	this.len = 10;
 	this.xComp = 0;
 	this.yComp = 0;
+	this.selected = false;
 
 	this.draw = function(c){
 		c.beginPath();
@@ -197,6 +212,20 @@ function Field_Probe(x, y, height) {
 		c.lineTo(this.x + 5, this.y - 5);
 		c.strokeStyle = 'black';
 		c.stroke();
+	};
+
+	this.followMouse = function(){
+		if(this.selected){
+			this.x = mouse.x;
+			this.y = mouse.y;			
+		}
+	};
+
+	this.checkMouse = function(){
+		if(Math.abs(this.x - mouse.x) < 20 && 
+			Math.abs(this.y - mouse.y) < 20){
+			this.selected = true;
+		}
 	};
 
 	this.getData = function() {

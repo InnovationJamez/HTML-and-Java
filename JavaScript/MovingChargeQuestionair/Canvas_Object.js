@@ -91,7 +91,6 @@ function Canvas_Object(canvasId) {
 		for(var i = 0; i < this.numbProbes; i++) {
 			this.probeList[i].update(this.chargeList);
 			this.probeList[i].draw(this.context);
-			this.probeList[i].getData();
 		}
 
 	}
