@@ -145,12 +145,6 @@ function Question(){
 			}
 		}
 
-		if(this.correct){
-			this.canvas.resetCanvas();
-			this.onQuestionModeStart();
-			this.update();
-		}
-
 	}
 
 }
