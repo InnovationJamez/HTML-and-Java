@@ -7,7 +7,9 @@ questionText = [
 	"Answer Questions",
 	"Free Play",
 	"Add charge",
-	"Remove charge"
+	"Remove charge",
+	"Correct",
+	"Incorrect"
 ];
 
 function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {

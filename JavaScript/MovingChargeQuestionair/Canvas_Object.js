@@ -133,6 +133,14 @@ function Canvas_Object(canvasId) {
 		// remove charge : 7
 		this.addButton(this.canvasId.width * 0.33, this.canvasId.height * 0.95, 
 			this.canvasId.width * 0.66, this.canvasId.height * 0.999, 8);
+
+		// correct : 8
+		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.10, 
+			this.canvasId.width * 0.80, this.canvasId.height * 0.20, 9);
+
+		//incorrect : 9
+		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.10, 
+			this.canvasId.width * 0.80, this.canvasId.height * 0.20, 10);
 	}
 
 	// reset canvas

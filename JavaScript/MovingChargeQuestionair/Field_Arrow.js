@@ -154,6 +154,8 @@ Field_Arrow.prototype.getComponentSum = function() {
 			this.angle = 180 + Math.atan(this.yFieldSum/this.xFieldSum) * 180 / Math.PI;
 		}
 
+		this.angle = (this.angle > 0) ? this.angle : this.angle + 360;
+
 		this.magnitudeField = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2)
 		this.len = this.magnitudeField / 300000 + 5;
 		this.len = (this.len > 20) ? 20 : this.len;

@@ -76,7 +76,7 @@ function Question(){
 	};
 
 	this.onQuestionModeStart = function(){
-		this.textNum = (Math.random() - 0.5 > 0) ? 0 : 1;
+		this.textNum = (Math.random() - 0.5 > 0.2) ? 0 : 1;
 		this.targetAngle = (this.textNum == 1) ? 0 : angleList[Math.ceil(Math.random() * angleList.length)];
 
 		this.canvas.buttonList[0].update(this.textNum, this.targetAngle);
@@ -94,28 +94,42 @@ function Question(){
 	};
 
 	this.checkAnswer = function() {
-		var correct;
+		var correct = false;
 
-		xAv = (this.canvas.chargeList[0].x + this.canvas.chargeList[1].x) / 2;
-		yAv = (this.canvas.chargeList[0].y + this.canvas.chargeList[1].y) / 2;
+		var xAv = (this.canvas.chargeList[0].x + this.canvas.chargeList[1].x) / 2;
+		var yAv = (this.canvas.chargeList[0].y + this.canvas.chargeList[1].y) / 2;
 
 		var xMin =  xAv - 25;
 		var xMax = xAv + 25;
 		var yMin = yAv - 25;
 		var yMax = yAv + 25;
+		var minAngle = this.targetAngle - 10;
+		var maxAngle = this.targetAngle + 10;
+
+
+
+		console.log(this.canvas.probeList[0].angle + "  " + this.targetAngle);
 
 		// check angle is close to the target
 
 
 		if(this.textNum == 0){
-			correct = (this.canvas.probeList[0].angle > (this.target - 10) &&
-				this.canvas.probeList[0].angle < (this.target + 10));
+			if(this.canvas.probeList[0].angle > minAngle && 
+				this.canvas.probeList[0].angle < this.targetAngle){
+				this.correct = true;
+				this.canvas.buttonList[8].draw(this.canvas.context);
+			}
+			else{
+				this.correct = false;
+				this.canvas.buttonList[9].draw(this.canvas.context);
+			}
 		}
 		else{ // check that the field is close to zero
 
 			if(this.canvas.probeList[0].x > xMin && this.canvas.probeList[0].x < xMax && 
-				this.canvas.probeList[0].y > yMin && this.canvas.probeList[0].x < yMax){
+				this.canvas.probeList[0].y > yMin && this.canvas.probeList[0].y < yMax){
 				correct = true;
+				this.canvas.buttonList[8].draw(this.canvas.context);
 			}
 			else{
 				correct = false;
@@ -126,10 +140,16 @@ function Question(){
 				this.canvas.context.lineTo(xMin, yMax);
 				this.canvas.context.lineTo(xMin, yMin);
 				this.canvas.context.stroke();
+
+				this.canvas.buttonList[9].draw(this.canvas.context);
 			}
 		}
 
-		console.log(correct);
+		if(this.correct){
+			this.canvas.resetCanvas();
+			this.onQuestionModeStart();
+			this.update();
+		}
 
 	}
 
