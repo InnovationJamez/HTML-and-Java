@@ -23,21 +23,31 @@ game modes
 
 */
 
+var angleList = [0, 45, 90, 135, 180, 225, 270, 315, 360]
+
 
 
 function Question(){
 	this.mode = 0;
 	this.canvas = new Canvas_Object("canvasOne");
 	this.drawArrows = false;
+	this.targetAngle = 0;
+	this.textNum;
 
 	this.start = function(){
 		this.canvas.createButtons();
 		this.canvas.createArrows();
 	};
 
-	this.addRandomCharge = function(){
+	this.addRandomCharge = function(mod = true){
 		var charge = Math.random() * 2 + 0.25;
-		charge *= (Math.random() - 0.5 > 0) ? 1 : -1;
+
+		if(mod){
+			charge *= (Math.random() - 0.5 > 0) ? 1 : -1;
+		}
+		else{
+			charge *= (Math.random() - 0.5 > 0) ? -1 : -1;
+		}
 
 		var xPos = Math.random() * (this.canvas.canvasId.width * 0.6) + 
 			this.canvas.canvasId.width * 0.20;
@@ -66,11 +76,62 @@ function Question(){
 	};
 
 	this.onQuestionModeStart = function(){
-		this.addRandomCharge();
-		this.addRandomCharge();
+		this.textNum = (Math.random() - 0.5 > 0) ? 0 : 1;
+		this.targetAngle = (this.textNum == 1) ? 0 : angleList[Math.ceil(Math.random() * angleList.length)];
+
+		this.canvas.buttonList[0].update(this.textNum, this.targetAngle);
+		if(this.textNum == 0){
+			this.addRandomCharge();
+			this.addRandomCharge();		
+		}
+		else{
+			this.addRandomCharge(false);
+			this.addRandomCharge(false);	
+		}
+
 		this.canvas.addProbe(this.canvas.canvasId.width / 2, 
 			this.canvas.canvasId.height / 2);
 	};
+
+	this.checkAnswer = function() {
+		var correct;
+
+		xAv = (this.canvas.chargeList[0].x + this.canvas.chargeList[1].x) / 2;
+		yAv = (this.canvas.chargeList[0].y + this.canvas.chargeList[1].y) / 2;
+
+		var xMin =  xAv - 25;
+		var xMax = xAv + 25;
+		var yMin = yAv - 25;
+		var yMax = yAv + 25;
+
+		// check angle is close to the target
+
+
+		if(this.textNum == 0){
+			correct = (this.canvas.probeList[0].angle > (this.target - 10) &&
+				this.canvas.probeList[0].angle < (this.target + 10));
+		}
+		else{ // check that the field is close to zero
+
+			if(this.canvas.probeList[0].x > xMin && this.canvas.probeList[0].x < xMax && 
+				this.canvas.probeList[0].y > yMin && this.canvas.probeList[0].x < yMax){
+				correct = true;
+			}
+			else{
+				correct = false;
+				this.canvas.context.beginPath();
+				this.canvas.context.moveTo(xMin, yMin);
+				this.canvas.context.lineTo(xMax, yMin);
+				this.canvas.context.lineTo(xMax, yMax);
+				this.canvas.context.lineTo(xMin, yMax);
+				this.canvas.context.lineTo(xMin, yMin);
+				this.canvas.context.stroke();
+			}
+		}
+
+		console.log(correct);
+
+	}
 
 }
 
@@ -113,7 +174,7 @@ question.canvas.canvasId.addEventListener('click', function(event){
 
 			}
 			else if(question.canvas.buttonList[1].checkClick() && question.canvas.buttonList[4].drawn){
-
+				question.checkAnswer();
 			}
 			else if(question.canvas.buttonList[2].checkClick() && question.canvas.buttonList[4].drawn){
 				question.drawArrows = !question.drawArrows;

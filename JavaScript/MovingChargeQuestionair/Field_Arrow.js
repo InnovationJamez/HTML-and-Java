@@ -229,7 +229,7 @@ function Field_Probe(x, y, height) {
 	};
 
 	this.getData = function() {
-		console.log(this.magnitudeField + " " + this.angle);
+		console.log("field: " + this.magnitudeField + " \nangle: " + this.angle);
 	};
 
 }

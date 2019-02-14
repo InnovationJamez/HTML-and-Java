@@ -1,6 +1,6 @@
 questionText = [
-	"Find the point where the electric field is ",
 	"Find the point where the angle of the electric field is ",
+	"Find the point where the electric field is zero",
 	"Submitt",
 	"Show field",
 	"Main menu",
@@ -53,7 +53,7 @@ function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 
 		c.font = '20px Arial';
 		c.textAlign = "center";
-		if(this.questionNumber > 1){
+		if(this.questionNumber > 0){
 			c.strokeText(questionText[this.questionNumber], this.xPos, this.yPos);
 		}
 		else{
