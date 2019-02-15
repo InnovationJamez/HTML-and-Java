@@ -76,7 +76,7 @@ function Question(){
 	};
 
 	this.onQuestionModeStart = function(){
-		this.textNum = (Math.random() - 0.5 > 0.2) ? 0 : 1;
+		this.textNum = (Math.random() - 0.5 > -0.25) ? 0 : 1;
 		this.targetAngle = (this.textNum == 1) ? 0 : angleList[Math.ceil(Math.random() * angleList.length)];
 
 		this.canvas.buttonList[0].update(this.textNum, this.targetAngle);
@@ -106,22 +106,18 @@ function Question(){
 		var minAngle = this.targetAngle - 10;
 		var maxAngle = this.targetAngle + 10;
 
-
-
-		console.log(this.canvas.probeList[0].angle + "  " + this.targetAngle);
-
 		// check angle is close to the target
 
 
 		if(this.textNum == 0){
-			if(this.canvas.probeList[0].angle > minAngle && 
-				this.canvas.probeList[0].angle < this.targetAngle){
+			if(this.canvas.probeList[0].angle > minAngle && this.canvas.probeList[0].angle < this.targetAngle){
 				this.correct = true;
 				this.canvas.buttonList[8].draw(this.canvas.context);
 			}
 			else{
 				this.correct = false;
-				this.canvas.buttonList[9].draw(this.canvas.context);
+				this.canvas.buttonList[9].draw(this.canvas.context, 
+					this.canvas.probeList[0].angle);
 			}
 		}
 		else{ // check that the field is close to zero
@@ -141,7 +137,8 @@ function Question(){
 				this.canvas.context.lineTo(xMin, yMin);
 				this.canvas.context.stroke();
 
-				this.canvas.buttonList[9].draw(this.canvas.context);
+				this.canvas.buttonList[9].draw(this.canvas.context, 
+					this.canvas.probeList[0].magnitudeField);
 			}
 		}
 

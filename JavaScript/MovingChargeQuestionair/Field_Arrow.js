@@ -14,6 +14,7 @@ function getSum(numList) {
 	return sum;
 }
 
+
 function Charge(x, y, q, height) {
 	this.x = x;
 	this.y = height - y;

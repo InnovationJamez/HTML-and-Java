@@ -9,7 +9,7 @@ questionText = [
 	"Add charge",
 	"Remove charge",
 	"Correct",
-	"Incorrect"
+	"Incorrect: "
 ];
 
 function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
@@ -40,7 +40,7 @@ function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 		this.targetAngle = targetAngle;
 	};
 
-	this.draw = function(c){
+	this.draw = function(c, num = 0){
 		c.beginPath();
 		c.moveTo(this.x1, this.y1);
 		c.lineTo(this.x2, this.y1);
@@ -55,8 +55,12 @@ function Text_Box(x1, y1, x2, y2, questionNumber = 2, targetAngle = 0) {
 
 		c.font = '20px Arial';
 		c.textAlign = "center";
-		if(this.questionNumber > 0){
+		if(this.questionNumber > 0 && this.questionNumber < 10){
 			c.strokeText(questionText[this.questionNumber], this.xPos, this.yPos);
+		}
+		else if(this.questionNumber == 10){
+			c.strokeText(questionText[this.questionNumber] + 
+				num.toFixed(2), this.xPos, this.yPos);
 		}
 		else{
 			c.strokeText(questionText[this.questionNumber] + 
