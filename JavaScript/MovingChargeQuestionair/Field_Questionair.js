@@ -110,7 +110,7 @@ function Question(){
 
 
 		if(this.textNum == 0){
-			if(this.canvas.probeList[0].angle > minAngle && this.canvas.probeList[0].angle < this.targetAngle){
+			if(this.canvas.probeList[0].angle > minAngle && this.canvas.probeList[0].angle < maxAngle){
 				this.correct = true;
 				this.canvas.buttonList[8].draw(this.canvas.context);
 			}
