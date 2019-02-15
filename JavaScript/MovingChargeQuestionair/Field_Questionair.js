@@ -77,7 +77,7 @@ function Question(){
 
 	this.onQuestionModeStart = function(){
 		this.textNum = (Math.random() - 0.5 > -0.25) ? 0 : 1;
-		this.targetAngle = (this.textNum == 1) ? 0 : angleList[Math.ceil(Math.random() * angleList.length)];
+		this.targetAngle = (this.textNum == 1) ? 0 : angleList[Math.floor(Math.random() * angleList.length)];
 
 		this.canvas.buttonList[0].update(this.textNum, this.targetAngle);
 		if(this.textNum == 0){
