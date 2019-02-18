@@ -174,6 +174,7 @@ question.canvas.canvasId.addEventListener('click', function(event){
 			}
 			else if(question.canvas.buttonList[6].checkClick() && question.canvas.buttonList[4].drawn){
 				question.addRandomCharge();
+				question.update();
 			}
 			else if(question.canvas.buttonList[7].checkClick() && question.canvas.buttonList[4].drawn){
 				question.canvas.removeCharge();
@@ -182,7 +183,6 @@ question.canvas.canvasId.addEventListener('click', function(event){
 			break;
 		case 2:
 			if(question.canvas.buttonList[0].checkClick() && question.canvas.buttonList[4].drawn){
-
 			}
 			else if(question.canvas.buttonList[1].checkClick() && question.canvas.buttonList[4].drawn){
 				question.checkAnswer();
@@ -196,6 +196,9 @@ question.canvas.canvasId.addEventListener('click', function(event){
 				question.canvas.resetCanvas();
 				question.update();
 			}
+			break;
+		case 3:
+			
 			break;
 	}
 
