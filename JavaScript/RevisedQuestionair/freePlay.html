@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		canvas {
+			border: 5px solid black;
+		}
+	</style>
+</head>
+<body>
+	<canvas></canvas><br />
+	<input type="range" id="chargeNum" min=-3 max=3>
+	<button onclick="altercharges(1)";>Add Charge</button>
+	<button onclick="altercharges(2)">Remove Charge</button>
+
+	<script src="Field_Arrow.js"></script>
+	<script src="Canvas_Object.js"></script>
+	<script>
+		canvasOne = new Canvas_Object(0.8, 0.5);
+		canvasOne.createArrows();
+		canvasOne.updateCanvas();
+
+		altercharges = function(num){
+			var charge = document.getElementById("chargeNum").value;
+
+			if(num == 1 && charge != 0){
+				canvasOne.addCharge(50, 50, charge);
+			}
+			else if(num == 2) {
+				canvasOne.removeCharge();
+			}
+			canvasOne.updateCanvas();
+		}
+	</script>
+</body>
+<html>
