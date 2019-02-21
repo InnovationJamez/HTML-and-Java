@@ -60,11 +60,11 @@ function Charge(x, y, q, height) {
 
 }
 
-function Field_Arrow(x, y, height) {
+function Field_Arrow(x, y, height, angle = 0) {
 	this.x = x;
 	this.y = height - y;
 
-	this.angle = 0;
+	this.angle = angle;
 	this.xField = [];
 	this.xFieldSum = 0;
 	this.yField = [];
@@ -225,9 +225,10 @@ function Field_Probe(x, y, height) {
 	};
 
 	this.checkMouse = function(){
+
 		if(Math.abs(this.x - mouse.x) < 20 && 
 			Math.abs(this.y - mouse.y) < 20){
-			this.selected = true;
+			this.selected = true;		
 		}
 	};
 

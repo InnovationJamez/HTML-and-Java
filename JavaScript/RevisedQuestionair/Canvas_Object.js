@@ -20,9 +20,6 @@ function Canvas_Object(width, height) {
 	this.probeList = [];
 	this.numbProbes = 0;
 
-	// for buttons
-	this.buttonList = [];
-
 	// create arrows
 	this.createArrows = function() {
 		var arrowX, arrowY;
@@ -100,12 +97,6 @@ function Canvas_Object(width, height) {
 	this.resetCanvas = function(){
 		this.chargeList = [];
 		this.probeList = [];
-
-		var buttonListLength = this.buttonList.length;
-
-		for(var i = 0; i < buttonListLength; i++){
-			this.buttonList[i].drawn = false;
-		}
 	}
 
 	this.updateCanvas = function() {
@@ -116,6 +107,98 @@ function Canvas_Object(width, height) {
 		this.updateCharges(); 
 
 		this.updateProbes();
+	}
+
+	this.mouseDown = function(event, mode = 0){
+		mouse.x = event.x;
+		mouse.y = event.y;
+
+		this.numbProbes = this.probeList.length;
+
+		for(var i = 0; i < this.numbProbes; i++){
+			this.probeList[i].checkMouse();
+			if(this.probeList[i].selected){
+				break;
+			}
+		}
+
+		if(mode === 0) {
+			this.numCharges = this.chargeList.length;
+
+			for(var i = 0; i < this.numCharges; i++){
+				this.chargeList[i].checkMouse();
+				if(this.chargeList[i].selected){
+					break;
+				}
+			}			
+		}
+
+	}
+
+	this.mouseUp = function(event,  mode = 0){
+		mouse.x = event.x;
+		mouse.y = event.y;
+
+		this.numbProbes = this.probeList.length;
+
+		for(var i = 0; i < this.numbProbes; i++){
+			this.probeList[i].selected = false;
+		}
+
+		if(mode === 0) {
+			this.numCharges = this.chargeList.length;
+
+			for(var i = 0; i < this.numCharges; i++){
+				this.chargeList[i].selected = false;
+			}
+		}
+	}
+
+	this.mouseMove = function(event,  mode = 0) {
+		mouse.x = event.x;
+		mouse.y = event.y;
+
+		this.numbProbes = this.probeList.length;
+
+		for(var i = 0; i < this.numbProbes; i++){
+			this.probeList[i].followMouse();
+		}
+
+		
+		if(mode === 0){
+			this.numCharges = this.chargeList.length;
+			for(var i = 0; i < this.numCharges; i++){
+				this.chargeList[i].followMouse();
+			}
+		}
+	}
+
+	this.showCorrect = function(correct, num = ""){
+		var xMin = this.canvasId.width * 0.2;
+		var xMax = this.canvasId.width * 0.8;
+		var yMin = this.canvasId.height * 0.1;
+		var yMax = this.canvasId.height * 0.2;
+
+		this.context.moveTo(xMin, yMin); 
+		this.context.lineTo(xMin, yMax);
+		this.context.lineTo(xMax, yMax);
+		this.context.lineTo(xMax, yMin);
+		this.context.lineTo(xMin, yMin);
+		this.context.stroke();
+		this.context.fillStyle = 'grey';
+		this.context.fill();
+
+		this.context.font = "20px Arial";
+		this.context.fillStyle = "red";
+		this.context.textAlign = "center";
+		if(num !== ""){
+			this.context.fillText(correct + " Current angle: " + num, 
+				(xMin + xMax) / 2, (yMin + yMax) / 2 + 5);
+		}
+		else{
+			this.context.fillText(correct, (xMin + xMax) / 2, 
+				(yMin + yMax) / 2 + 5);
+		}
 	}
 
 }

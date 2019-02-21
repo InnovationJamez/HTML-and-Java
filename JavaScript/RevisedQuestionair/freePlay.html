@@ -3,34 +3,36 @@
 <head>
 	<style>
 		canvas {
-			border: 5px solid black;
+			border: 0px solid black;
 		}
+
+		body {
+			margin: 0px;
+		}
+
+		button, input {
+			text-align: center;
+			width: 20%;
+		}
+
+
+
 	</style>
 </head>
 <body>
+	<div id="control">
 	<canvas></canvas><br />
-	<input type="range" id="chargeNum" min=-3 max=3>
-	<button onclick="altercharges(1)";>Add Charge</button>
-	<button onclick="altercharges(2)">Remove Charge</button>
+	</div>
 
+	<div id="control">
+		-2<input type="range" id="chargeNum" min=-2 max=2 step=0.2>2
+		Choice: <span id="p">0</span>
+		<button onclick="altercharges(1)">Add Charge</button>
+		<button onclick="altercharges(2)">Remove Charge</button>
+		<button onclick="window.location.href = 'index.html';">Home</button>
+	</div>
 	<script src="Field_Arrow.js"></script>
 	<script src="Canvas_Object.js"></script>
-	<script>
-		canvasOne = new Canvas_Object(0.8, 0.5);
-		canvasOne.createArrows();
-		canvasOne.updateCanvas();
-
-		altercharges = function(num){
-			var charge = document.getElementById("chargeNum").value;
-
-			if(num == 1 && charge != 0){
-				canvasOne.addCharge(50, 50, charge);
-			}
-			else if(num == 2) {
-				canvasOne.removeCharge();
-			}
-			canvasOne.updateCanvas();
-		}
-	</script>
+	<script src="freePlay.js"></script>
 </body>
-<html>
+</html>
