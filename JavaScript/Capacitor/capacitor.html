@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.frac {
+		    display: inline-block;
+		    position: relative;
+		    vertical-align: middle;
+		    letter-spacing: 0.001em;
+		    text-align: center;
+		}
+		.frac > span {
+		    display: block;
+		    padding: 0.1em;
+		}
+		.frac span.bottom {
+		    border-top: thin solid black;
+		}
+		.frac span.symbol {
+		    display: none;
+		} 
+
+	</style>
+
+</head>
+<body>
+	C = <div class="frac">
+	    <span>Q</span>
+	    <span class="symbol">/</span>
+	    <span class="bottom">V</span>
+	</div>
+
+	<form>
+		C: <input type="number"><br />
+		Q: <input type="number"><br />
+		V: <input type="number"><br />
+		<button type="button">Submitt</button>
+	</form>
+
+	<h2>plates seporated by air</h2>
+
+	C = <div class="frac">
+	    <span>ε<sub>0</sub> * A</span>
+	    <span class="symbol">/</span>
+	    <span class="bottom">d</span>
+	</div>
+
+	<h2>plates seporated by dielectric</h2>
+
+	C = <div class="frac">
+	    <span>k * ε<sub>0</sub> * A</span>
+	    <span class="symbol">/</span>
+	    <span class="bottom">d</span>
+	</div>
+
+	<form>
+		dielectric: <select>
+						<option>Air</option>
+						<option>Glass</option>
+						<option>Ceramic</option>
+						<option>Paper</option>
+						<option>Mica</option>
+					</select><br />
+		A: <input type="number"><br />
+		d: <input type="number"><br />
+		C: <input type="number"><br />
+		<button type="button">Submitt</button>
+	</form>
+
+
+	<h2 RC circtuit>
+	<p>V = ε[1 - e<sup>-t / rc</sup>]</p>
+
+
+	<canvas></canvas>
+
+	<form>
+		dielectric: <select>
+						<option>Air</option>
+						<option>Glass</option>
+						<option>Ceramic</option>
+						<option>Paper</option>
+						<option>Mica</option>
+		</select><br />
+
+		A: <input type="number"><br />
+		d: <input type="number"><br />
+		C: <input type="number"><br />
+		Resistance: <input type="number"><br />
+		Battery EMF: <input type="number"><br />
+		<button type="button">Submitt</button>
+		<button type="button" onclick="circuit.switchToggle()">Open/Close</button>
+		<button type="button">Reset</button>
+	</form>
+
+	<script src="capacitor.js"></script>
+
+</body>
+</html>
