@@ -49,16 +49,12 @@ function Circuit() {
 
 	// update
 	this.update = function(){
+
 		this.updateCircuit();
 		this.endCount = new Date();
 
 		this.elapsedTime = (this.endCount.getSeconds() + this.endCount.getMinutes() * 60) - 
 			(this.startCount.getSeconds() + this.startCount.getMinutes() * 60);
-
-
-		this.gap += this.endCount.getMilliseconds() - this.otherStart.getMilliseconds();
-
-
 
 	}
 
@@ -69,34 +65,42 @@ function coord(x, y){
 	this.y = y;
 }
 
-function Charge(x, y, s, coordList){
+function Charge(x, y, s, coordListOne, coordListTwo){
 	this.speed = s;
 	this.dx = 0, this.dy = 0;
 	this.x = x, this.y = y;
-	this.coordList = coordList;
-	this.complete = false;
-	this.count = 0;
+	this.coordList = coordListOne;
+	this.coordListTwo = coordListTwo;
+	this.count = 0, this.countOne = 0;
 
-	this.setSpeed = function(){
-		if(this.y < coordList[this.count].y){
+	this.setSpeed = function(list, num){
+		if(this.y < list[num].y){
 			this.dy = this.speed;
 		}
-		if(this.y > coordList[this.count].y){
+		if(this.y > list[num].y){
 			this.dy = -this.speed;
 		}
-		if(this.x < coordList[this.count].x){
+		if(this.y == list[num].y){
+			this.dy = 0;
+		}
+		if(this.x < list[num].x){
 			this.dx = this.speed;
 		}
-		if(this.x > coordList[this.count].x){
+		if(this.x > list[num].x){
 			this.dx = -this.speed;
 		}
-		if(this.x > coordList[this.count].x - 2 && this.x < coordList[this.count].x + 2 && 
-			this.y > coordList[this.count].y - 2 && this.y < coordList[this.count].y + 2){
+		if(this.x == list[num].x){
+			this.dx = 0;
+		}
+		if(this.x > list[num].x - 2 && this.x < list[num].x + 2 && 
+			this.y > list[num].y - 2 && this.y < list[num].y + 2){
 
-			if(this.count < (this.coordList.length - 1)){
-				this.count += 1;
+			if(num < (list.length - 1)){
+				num += 1;
 			}
-		}		
+		}
+
+		return num;		
 	}
 
 	this.move= function(){
@@ -113,10 +117,15 @@ function Charge(x, y, s, coordList){
 	}
 
 	this.update = function(c, move){
-		if(move){
-			this.setSpeed();
+		if(move == true && this.countOne < 1){
+			this.count = this.setSpeed(this.coordList, this.count);
 			this.move();
 		}
+		else if(this.count > 1 && move == false){
+			this.countOne = this.setSpeed(this.coordListTwo, this.countOne);
+			this.move();
+		}
+
 		this.draw(c);
 
 	}

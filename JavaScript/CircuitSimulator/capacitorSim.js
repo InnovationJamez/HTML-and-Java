@@ -12,11 +12,12 @@ function capacitorSim() {
 
 	// charges
 	this.coordList = [];
+	this.coordListTwo = [];
 	this.chargeList = [];
 	this.startX = this.width * 0.2;
 	this.startY = this.height * 0.45;
 
-	// create coordinate List
+	// create coordinate List for battery to capacitor
 	this.createCoords = function(){
 		this.coordList = [];
 		this.coordList.push(new coord(this.width * 0.2, this.height * 0.8));
@@ -24,10 +25,32 @@ function capacitorSim() {
 		this.coordList.push(new coord(this.width * 0.5, this.height * 0.50));		
 	}
 
+	// create coordiante List for capacitor to resistor
+	this.createSecondCoordList = function() {
+		coordListTwo = [];
+		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.8));
+		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.8));
+		this.coordListTwo.push(new coord(this.width * 0.80, this.height * 0.60));
+		this.coordListTwo.push(new coord(this.width * 0.85, this.height * 0.58));
+		this.coordListTwo.push(new coord(this.width * 0.75, this.height * 0.56));
+		this.coordListTwo.push(new coord(this.width * 0.85, this.height * 0.54));
+		this.coordListTwo.push(new coord(this.width * 0.75, this.height * 0.52));
+		this.coordListTwo.push(new coord(this.width * 0.85, this.height * 0.50));
+		this.coordListTwo.push(new coord(this.width * 0.75, this.height * 0.48));
+		this.coordListTwo.push(new coord(this.width * 0.85, this.height * 0.46));
+		this.coordListTwo.push(new coord(this.width * 0.75, this.height * 0.44));
+		this.coordListTwo.push(new coord(this.width * 0.85, this.height * 0.42));
+		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.2));
+		this.coordListTwo.push(new coord(this.width * 0.6, this.height * 0.2));
+	}
+
+
+
 	// create new charge
 	this.createCharge = function() {
 		this.createCoords();
-		this.chargeList.push(new Charge(this.startX, this.startY, 1, this.coordList));
+		this.createSecondCoordList();
+		this.chargeList.push(new Charge(this.startX, this.startY, 1.0, this.coordList, this.coordListTwo));
 	}
 
 	//update charges
@@ -127,8 +150,12 @@ function capacitorSim() {
 		this.context.fillText("switch: " + text, 20, 20);
 		this.context.fillText("charge: " + this.circuit.capVoltage.toPrecision(2) + " V", 20, 40);
 		this.context.fillText("percent charge: " + this.circuit.percentCharge.toPrecision(2) + " %", 20, 60);
-		this.context.fillText("time: " + this.circuit.elapsedTime.toPrecision(2) + " us", 20, 80);
-		this.context.fillText("gap: " + this.circuit.gap.toPrecision(2) + " ms", 20, 100);
+		this.context.fillText("current: " + this.circuit.I.toPrecision(2) + " A", 20, 80);
+		this.context.fillText("time: " + this.circuit.elapsedTime.toPrecision(2) + " us", 20, 100);
+		this.context.fillText("gap: " + this.circuit.gap.toPrecision(2) + " ms", 20, 120);
+
+		this.circuit.gap += (this.circuit.endCount.getMilliseconds() + this.circuit.endCount.getSeconds() * 1000) - 
+		(this.circuit.otherStart.getMilliseconds() + this.circuit.otherStart.getSeconds() * 1000);
 
 		if(this.circuit.gap > 10 && this.circuit.switch == true){
 			this.createCharge();
