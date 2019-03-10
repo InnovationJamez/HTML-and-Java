@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		canvas {
+			border: 0px solid black;
+		}
+
+		body {
+			margin: 0px;
+		}
+
+		button, input {
+			text-align: center;
+			width: 20%;
+		}
+
+
+
+	</style>
+</head>
+<body>
+	<div id="control">
+	<canvas></canvas><br />
+	</div>
+
+	<div id="control">
+		-2<input type="range" id="chargeNum" min=-2 max=2 step=0.2>2
+		Choice: <span id="p">0</span>
+		<button onclick="altercharges(1)">Add Charge</button>
+		<button onclick="altercharges(2)">Remove Charge</button>
+		<button onclick="window.location.href = 'index.html';">Home</button>
+	</div>
+	<script src="javascript\Field_Arrow.js"></script>
+	<script src="javascript\Canvas_Object.js"></script>
+	<script src="javascript\freePlay.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
-function Canvas_Object(canvasId) {
+function Canvas_Object(width, height) {
 	this.canvasId = document.querySelector('canvas');
-	this.canvasId.width = window.innerWidth * 0.99;
-	this.canvasId.height = window.innerHeight * 0.99;
+	this.canvasId.width = window.innerWidth * width;
+	this.canvasId.height = window.innerHeight * height;
 	this.context = this.canvasId.getContext("2d");
 
 	// for storing the charges
@@ -19,9 +19,6 @@ function Canvas_Object(canvasId) {
 	// for storing the field probes
 	this.probeList = [];
 	this.numbProbes = 0;
-
-	// for buttons
-	this.buttonList = [];
 
 	// create arrows
 	this.createArrows = function() {
@@ -95,87 +92,11 @@ function Canvas_Object(canvasId) {
 
 	}
 
-	// create button
-	this.addButton = function(x1, y1, x2, y2, qType, angle){
-		this.buttonList.push(new Text_Box(x1, y1, x2, y2, qType, angle));
-	}
-
-	// create buttons
-	this.createButtons = function() {
-		// question bar : 0
-		this.addButton(this.canvasId.width * 0.05, this.canvasId.height * 0.03, 
-			this.canvasId.width * 0.95, this.canvasId.height * 0.1, 0, 0);
-
-		// submitt : 1
-		this.addButton(this.canvasId.width * 0.01, this.canvasId.height * 0.95, 
-			this.canvasId.width * 0.33, this.canvasId.height * 0.999, 2);
-
-		// show field : 2
-		this.addButton(this.canvasId.width * 0.33, this.canvasId.height * 0.95, 
-			this.canvasId.width * 0.66, this.canvasId.height * 0.999, 3);
-
-		// main menue : 3
-		this.addButton(this.canvasId.width * 0.66, this.canvasId.height * 0.95, 
-			this.canvasId.width * 0.99, this.canvasId.height * 0.999, 4);
-
-		// answer questions : 4
-		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.40, 
-			this.canvasId.width * 0.80, this.canvasId.height * 0.50, 5);
-
-		// freeplay : 5
-		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.60, 
-			this.canvasId.width * 0.80, this.canvasId.height * 0.70, 6);
-
-		// add charge : 6
-		this.addButton(this.canvasId.width * 0.01, this.canvasId.height * 0.95, 
-			this.canvasId.width * 0.33, this.canvasId.height * 0.999, 7);
-
-		// remove charge : 7
-		this.addButton(this.canvasId.width * 0.33, this.canvasId.height * 0.95, 
-			this.canvasId.width * 0.66, this.canvasId.height * 0.999, 8);
-
-		// correct : 8
-		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.10, 
-			this.canvasId.width * 0.80, this.canvasId.height * 0.20, 9);
-
-		//incorrect : 9
-		this.addButton(this.canvasId.width * 0.20, this.canvasId.height * 0.10, 
-			this.canvasId.width * 0.80, this.canvasId.height * 0.20, 10);
-	}
-
 	// reset canvas
 
 	this.resetCanvas = function(){
 		this.chargeList = [];
 		this.probeList = [];
-
-		var buttonListLength = this.buttonList.length;
-
-		for(var i = 0; i < buttonListLength; i++){
-			this.buttonList[i].drawn = false;
-		}
-	}
-
-	// update the canvas
-
-	this.drawQuestionBox = function(value) {
-		switch(value){
-			case 0: // main menue
-				this.buttonList[4].draw(this.context);
-				this.buttonList[5].draw(this.context);
-				break;
-			case 1: // free play
-				this.buttonList[6].draw(this.context);
-				this.buttonList[7].draw(this.context);
-				this.buttonList[3].draw(this.context);
-				break;
-			case 2: // question mode
-				this.buttonList[0].draw(this.context);
-				this.buttonList[1].draw(this.context);
-				this.buttonList[2].draw(this.context);
-				this.buttonList[3].draw(this.context);
-				break;
-		}
 	}
 
 	this.updateCanvas = function() {
@@ -187,15 +108,98 @@ function Canvas_Object(canvasId) {
 
 		this.updateProbes();
 	}
+
+	this.mouseDown = function(event, mode = 0){
+		mouse.x = event.x;
+		mouse.y = event.y;
+
+		this.numbProbes = this.probeList.length;
+
+		for(var i = 0; i < this.numbProbes; i++){
+			this.probeList[i].checkMouse();
+			if(this.probeList[i].selected){
+				break;
+			}
+		}
+
+		if(mode === 0) {
+			this.numCharges = this.chargeList.length;
+
+			for(var i = 0; i < this.numCharges; i++){
+				this.chargeList[i].checkMouse();
+				if(this.chargeList[i].selected){
+					break;
+				}
+			}			
+		}
+
+	}
+
+	this.mouseUp = function(event,  mode = 0){
+		mouse.x = event.x;
+		mouse.y = event.y;
+
+		this.numbProbes = this.probeList.length;
+
+		for(var i = 0; i < this.numbProbes; i++){
+			this.probeList[i].selected = false;
+		}
+
+		if(mode === 0) {
+			this.numCharges = this.chargeList.length;
+
+			for(var i = 0; i < this.numCharges; i++){
+				this.chargeList[i].selected = false;
+			}
+		}
+	}
+
+	this.mouseMove = function(event,  mode = 0) {
+		mouse.x = event.x;
+		mouse.y = event.y;
+
+		this.numbProbes = this.probeList.length;
+
+		for(var i = 0; i < this.numbProbes; i++){
+			this.probeList[i].followMouse();
+		}
+
+		
+		if(mode === 0){
+			this.numCharges = this.chargeList.length;
+			for(var i = 0; i < this.numCharges; i++){
+				this.chargeList[i].followMouse();
+			}
+		}
+	}
+
+	this.showCorrect = function(correct, num = ""){
+		var xMin = this.canvasId.width * 0.2;
+		var xMax = this.canvasId.width * 0.8;
+		var yMin = this.canvasId.height * 0.1;
+		var yMax = this.canvasId.height * 0.2;
+
+		this.context.moveTo(xMin, yMin); 
+		this.context.lineTo(xMin, yMax);
+		this.context.lineTo(xMax, yMax);
+		this.context.lineTo(xMax, yMin);
+		this.context.lineTo(xMin, yMin);
+		this.context.stroke();
+		this.context.fillStyle = 'grey';
+		this.context.fill();
+
+		this.context.font = "20px Arial";
+		this.context.fillStyle = "red";
+		this.context.textAlign = "center";
+		if(num !== ""){
+			this.context.fillText(correct + " Current angle: " + num, 
+				(xMin + xMax) / 2, (yMin + yMax) / 2 + 5);
+		}
+		else{
+			this.context.fillText(correct, (xMin + xMax) / 2, 
+				(yMin + yMax) / 2 + 5);
+		}
+	}
+
 }
 
-/*
-var canOne = new Canvas_Object("canvasOne");
-canOne.createArrows();
-canOne.addCharge(100, 200, 2);
-canOne.addCharge(100, 400, 2);
-canOne.addProbe(100, 300);
-canOne.updateCanvas();
-canOne.createButtons();
-canOne.drawQuestionBox(1);
-*/

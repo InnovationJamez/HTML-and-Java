@@ -3,6 +3,7 @@ function Circuit() {
 	this.res = 5000;
 	this.emf = 12;
 	this.cap = 5 * 10 ** -9;
+	this.numcharges = 0;
 
 	//time data
 	this.startCount = new Date();
@@ -77,6 +78,8 @@ function Charge(x, y, s, coordListOne, coordListTwo){
 	this.coordListTwoLength = this.coordListTwo.length;
 	// for counting
 	this.count = 0, this.countOne = 0;
+
+	console.log(coordListOne);
 
 	this.setSpeed = function(list, num, length){
 		if(this.y < list[num].y){

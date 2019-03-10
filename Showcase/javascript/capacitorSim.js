@@ -40,7 +40,11 @@ function capacitorSim() {
 
 	// create new charge
 	this.createCharge = function() {
+		this.coordList.push(new coord(this.width * 0.4 + (this.circuit.numcharges * 5) % (this.width * 0.2), 
+			this.height * 0.50));
 		this.chargeList.push(new Charge(this.startX, this.startY, 1.0, this.coordList, this.coordListTwo));
+		this.circuit.numcharges++;
+		this.circuit.numcharges = this.circuit.numcharges % 100;
 	};
 
 	//update charges
