@@ -17,41 +17,20 @@ function capacitorSim() {
 	this.startX = this.width * 0.2;
 	this.startY = this.height * 0.45;
 	this.i = 0;
-
-	// create coordinate List for battery to capacitor
-	this.createCoords = function(){
-		this.coordList.push(new coord(this.width * 0.2, this.height * 0.8));
-		this.coordList.push(new coord(this.width * 0.5, this.height * 0.8));
-		this.coordList.push(new coord(this.width * 0.5, this.height * 0.50));		
-	};
-
-	// create coordiante List for capacitor to resistor
-	this.createSecondCoordList = function() {
-		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.8));
-		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.8));
-		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.2));
-		this.coordListTwo.push(new coord(this.width * 0.6, this.height * 0.2));
-		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.45));
-	};
-
-	// set up coord lists
-	this.createCoords();
-	this.createSecondCoordList();
+	this.numCharges = 0;
 
 	// create new charge
 	this.createCharge = function() {
-		this.coordList.push(new coord(this.width * 0.4 + (this.circuit.numcharges * 5) % (this.width * 0.2), 
-			this.height * 0.50));
-		this.chargeList.push(new Charge(this.startX, this.startY, 1.0, this.coordList, this.coordListTwo));
-		this.circuit.numcharges++;
-		this.circuit.numcharges = this.circuit.numcharges % 100;
+		this.chargeList.push(new Charge(this.startX, this.startY, 1.0, this.width, this.height, this.numCharges));
+		this.numCharges++;
+		this.numCharges = this.numCharges % 100;
 	};
 
 	//update charges
 
 	this.updateCharges = function() {
 		for(var i = 0; i < this.chargeList.length; i++){
-				this.chargeList[i].update(this.context, this.circuit.switch);
+			this.chargeList[i].update(this.context, this.circuit.switch);
 		}
 	};
 

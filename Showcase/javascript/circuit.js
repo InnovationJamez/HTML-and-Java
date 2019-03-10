@@ -3,7 +3,6 @@ function Circuit() {
 	this.res = 5000;
 	this.emf = 12;
 	this.cap = 5 * 10 ** -9;
-	this.numcharges = 0;
 
 	//time data
 	this.startCount = new Date();
@@ -66,20 +65,47 @@ function coord(x, y){
 	this.y = y;
 }
 
-function Charge(x, y, s, coordListOne, coordListTwo){
+function Charge(x, y, s, width, height, chargeNum){
+	this.numcharges = chargeNum;
 	this.speed = s;
 	this.dx = 0, this.dy = 0;
 	this.x = x, this.y = y;
+	this.width = width;
+	this.height = height;
 	// coord list one
-	this.coordList = coordListOne;
-	this.coordListLength = this.coordList.length;
+	this.coordList = [];
+	this.coordListLength;
 	// coord list two
-	this.coordListTwo = coordListTwo;
-	this.coordListTwoLength = this.coordListTwo.length;
+	this.coordListTwo = [];
+	this.coordListTwoLength;
 	// for counting
 	this.count = 0, this.countOne = 0;
 
-	console.log(coordListOne);
+	// create coordinate List for battery to capacitor
+	this.createCoords = function(){
+		this.coordList.push(new coord(this.width * 0.2, this.height * 0.8));
+		this.coordList.push(new coord(this.width * 0.5, this.height * 0.8));
+		this.coordList.push(new coord(this.width * 0.5, this.height * 0.55));
+		this.coordList.push(new coord(this.width * 0.4 + (this.numcharges * 5) % (this.width * 0.2), 
+			this.height * 0.5));	
+		this.coordListLength = this.coordList.length;	
+	};
+
+	// create coordiante List for capacitor to resistor
+	this.createSecondCoordList = function() {
+		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.5));
+		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.8));
+		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.8));
+		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.2));
+		this.coordListTwo.push(new coord(this.width * 0.6, this.height * 0.2));
+		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.40));
+		this.coordListTwo.push(new coord(this.width * 0.4 + (this.numcharges * 5) % (this.width * 0.2), 
+			this.height * 0.45));
+		this.coordListTwoLength = this.coordListTwo.length;
+	};
+
+	this.createCoords();
+	this.createSecondCoordList();
 
 	this.setSpeed = function(list, num, length){
 		if(this.y < list[num].y){
@@ -100,23 +126,22 @@ function Charge(x, y, s, coordListOne, coordListTwo){
 		if(this.x == list[num].x){
 			this.dx = 0;
 		}
+		// if close to spot move to right on top of it
 		if(this.x > list[num].x - 2 && this.x < list[num].x + 2 && 
 			this.y > list[num].y - 2 && this.y < list[num].y + 2){
 
 			if(num < (length - 1)){
 				num += 1;
-				console.log("length " + length);
-				console.log("num " + num);
 			}
 		}
 
 		return num;		
-	}
+	};
 
 	this.move= function(){
 		this.x += this.dx;
 		this.y += this.dy;
-	}
+	};
 
 	this.draw = function(c){
 		c.beginPath();
@@ -124,7 +149,7 @@ function Charge(x, y, s, coordListOne, coordListTwo){
 		c.fillStyle = "red"
 		c.fill();
 		c.stroke();		
-	}
+	};
 
 	this.update = function(c, move){
 		if(move == true && this.countOne < 1){
@@ -138,6 +163,6 @@ function Charge(x, y, s, coordListOne, coordListTwo){
 
 		this.draw(c);
 
-	}
+	};
 
 }
