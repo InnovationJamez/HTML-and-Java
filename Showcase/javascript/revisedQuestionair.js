@@ -16,6 +16,23 @@ function Question(questionId, answerId, questionType){
 	this.octNum = this.decNum.toString(8);
 	this.hexNum = this.decNum.toString(16);
 
+	// remove leading zeros from bin value
+	this.removeLeadingZero = function(binaryNum){
+		var len = binaryNum.length;
+		for(var i = 0; i < len; i++){
+			if(binaryNum[i] == '0'){
+			}
+			else{
+				binaryNum = binaryNum.slice(i, len);
+				break;
+			}
+		}
+
+		console.log(binaryNum);
+
+		return binaryNum;
+	};
+
 	switch(this.questionType){
 		case 1:
 			first = "<b>decimal</b>: <b>" + this.decNum + "</b>";
@@ -65,7 +82,11 @@ function checkAnswers(){
 	var score = 0;
 	var total = 0;
 	questionList.forEach(function tallyResults(element){
-		if(document.getElementById(element.answerId).value == element.correctAnswer){
+		var input = document.getElementById(element.answerId).value;
+		input = (element.questionType == 6 || element.questionType == 4 || 
+			element.questionType == 2) ? element.removeLeadingZero(input) : input;
+		var answer = element.correctAnswer;
+		if(input == answer){
 			document.getElementById(element.answerId).style.backgroundColor = "green";
 			score++;
 			total++;

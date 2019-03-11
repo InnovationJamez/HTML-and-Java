@@ -10,6 +10,7 @@ function Circuit() {
 	this.otherStart;
 	this.gap = 0;
 	this.elapsedTime = 0;
+	this.done = false;
 
 	// for storing calculations
 	this.capVoltage;
@@ -65,6 +66,8 @@ function coord(x, y){
 	this.y = y;
 }
 
+/// Charge stufff
+
 function Charge(x, y, s, width, height, chargeNum){
 	this.numcharges = chargeNum;
 	this.speed = s;
@@ -72,40 +75,43 @@ function Charge(x, y, s, width, height, chargeNum){
 	this.x = x, this.y = y;
 	this.width = width;
 	this.height = height;
-	// coord list one
-	this.coordList = [];
-	this.coordListLength;
-	// coord list two
-	this.coordListTwo = [];
-	this.coordListTwoLength;
+	//this.combined list
+	this.combinedList = [];
+	this.combinedListLength = 0;
+	this.comCount = 0;
 	// for counting
-	this.count = 0, this.countOne = 0;
+	this.count = 0, this.countOne = 0, this.countTwo = 0;
 
-	// create coordinate List for battery to capacitor
-	this.createCoords = function(){
-		this.coordList.push(new coord(this.width * 0.2, this.height * 0.8));
-		this.coordList.push(new coord(this.width * 0.5, this.height * 0.8));
-		this.coordList.push(new coord(this.width * 0.5, this.height * 0.55));
-		this.coordList.push(new coord(this.width * 0.4 + (this.numcharges * 5) % (this.width * 0.2), 
+	this.comList = function() {
+		// One
+		this.combinedList.push(new coord(this.width * 0.2, this.height * 0.8));
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.8));
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.50));
+		this.combinedList.push(new coord(this.width * 0.4 +(this.numcharges * 5) % (this.width * 0.2), 
 			this.height * 0.5));	
-		this.coordListLength = this.coordList.length;	
-	};
 
-	// create coordiante List for capacitor to resistor
-	this.createSecondCoordList = function() {
-		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.5));
-		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.8));
-		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.8));
-		this.coordListTwo.push(new coord(this.width * 0.8, this.height * 0.2));
-		this.coordListTwo.push(new coord(this.width * 0.6, this.height * 0.2));
-		this.coordListTwo.push(new coord(this.width * 0.5, this.height * 0.40));
-		this.coordListTwo.push(new coord(this.width * 0.4 + (this.numcharges * 5) % (this.width * 0.2), 
+		// two
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.5));
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.8));
+		this.combinedList.push(new coord(this.width * 0.8, this.height * 0.8));
+		this.combinedList.push(new coord(this.width * 0.8, this.height * 0.2));
+		this.combinedList.push(new coord(this.width * 0.6, this.height * 0.2));
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.45));
+		this.combinedList.push(new coord(this.width * 0.4 + (this.numcharges * 5) % (this.width * 0.2), 
 			this.height * 0.45));
-		this.coordListTwoLength = this.coordListTwo.length;
+
+		// three
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.40));
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.30));
+		this.combinedList.push(new coord(this.width * 0.4, this.height * 0.20));
+		this.combinedList.push(new coord(this.width * 0.2, this.height * 0.20));
+		this.combinedList.push(new coord(this.width * 0.2, this.height * 0.40));
+
+		this.combinedListLength = this.combinedList.length;
+
 	};
 
-	this.createCoords();
-	this.createSecondCoordList();
+	this.comList();
 
 	this.setSpeed = function(list, num, length){
 		if(this.y < list[num].y){
@@ -127,13 +133,15 @@ function Charge(x, y, s, width, height, chargeNum){
 			this.dx = 0;
 		}
 		// if close to spot move to right on top of it
-		if(this.x > list[num].x - 2 && this.x < list[num].x + 2 && 
-			this.y > list[num].y - 2 && this.y < list[num].y + 2){
+		if(this.x > list[num].x - 4 && this.x < list[num].x + 4 && 
+			this.y > list[num].y - 4 && this.y < list[num].y + 4){
 
 			if(num < (length - 1)){
 				num += 1;
 			}
 		}
+
+		this.move();
 
 		return num;		
 	};
@@ -152,13 +160,19 @@ function Charge(x, y, s, width, height, chargeNum){
 	};
 
 	this.update = function(c, move){
-		if(move == true && this.countOne < 1){
-			this.count = this.setSpeed(this.coordList, this.count, this.coordListLength);
-			this.move();
+		if(move == true && this.comCount < 4){
+			this.comCount = this.setSpeed(this.combinedList, this.comCount, this.combinedListLength);
 		}
-		else if(this.count > 1 && move == false){
-			this.countOne = this.setSpeed(this.coordListTwo, this.countOne, this.coordListTwoLength);
-			this.move();
+		else if(move == false && this.comCount >= 2 && this.comCount < 11){
+			this.comCount = (this.comCount < 3) ? 5 : this.comCount;
+			this.comCount = this.setSpeed(this.combinedList, this.comCount, this.combinedListLength);
+		}
+		else if(move == true && this.comCount > 8){
+			this.comCount = (this.comCount < 11) ? 11 : this.comCount;
+			this.comCount = this.setSpeed(this.combinedList, this.comCount, this.combinedListLength);
+		}
+		else if(this.comCount == this.combinedListLength - 1){
+			this.done = true;
 		}
 
 		this.draw(c);

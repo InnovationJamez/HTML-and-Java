@@ -2,9 +2,9 @@ function capacitorSim() {
 	// for drawing the data on canvas
 	this.canvasId = document.querySelector('canvas');
 	this.width = window.innerWidth;
-	this.height = this.width;
-	this.canvasId.width = this.width;
-	this.canvasId.height = this.height;
+	this.height = window.innerHeight;
+	this.canvasId.width = this.width * 0.999;
+	this.canvasId.height = this.height - 30;
 	this.context = this.canvasId.getContext("2d");
 
 	// circuit elements
@@ -30,6 +30,10 @@ function capacitorSim() {
 
 	this.updateCharges = function() {
 		for(var i = 0; i < this.chargeList.length; i++){
+			if(this.chargeList[i].done){
+				console.log(true);
+				this.chargeList.slice(i);
+			}
 			this.chargeList[i].update(this.context, this.circuit.switch);
 		}
 	};
@@ -124,9 +128,9 @@ function capacitorSim() {
 		this.context.fillText("switch: " + text, 20, 20);
 		this.context.fillText("charge: " + this.circuit.capVoltage.toPrecision(2) + " V", 20, 40);
 		this.context.fillText("percent charge: " + this.circuit.percentCharge.toPrecision(2) + " %", 20, 60);
-		this.context.fillText("current: " + this.circuit.I.toPrecision(2) + " A", 20, 80);
-		this.context.fillText("time: " + this.circuit.elapsedTime.toPrecision(2) + " us", 20, 100);
-		this.context.fillText("gap: " + this.circuit.gap.toPrecision(2) + " ms", 20, 120);
+		//this.context.fillText("current: " + this.circuit.I.toPrecision(2) + " A", 20, 80);
+		//this.context.fillText("time: " + this.circuit.elapsedTime.toPrecision(2) + " us", 20, 100);
+		//this.context.fillText("gap: " + this.circuit.gap.toPrecision(2) + " ms", 20, 120);
 		this.context.stroke();
 
 		if(this.circuit.switch){

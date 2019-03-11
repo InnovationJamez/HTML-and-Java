@@ -1,4 +1,4 @@
-canvasOne = new Canvas_Object(0.95, 0.875);
+canvasOne = new Canvas_Object(0.98, 0.9);
 canvasOne.createArrows();
 canvasOne.updateCanvas();
 
