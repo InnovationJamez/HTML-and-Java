@@ -15,7 +15,7 @@ function capacitorSim() {
 	this.coordListTwo = [];
 	this.chargeList = [];
 	this.startX = this.width * 0.2;
-	this.startY = this.height * 0.45;
+	this.startY = this.height * 0.60;
 	this.i = 0;
 	this.numCharges = 0;
 
@@ -46,10 +46,7 @@ function capacitorSim() {
 		this.context.lineTo(this.width * 0.2, this.height * 0.2);
 		this.context.lineTo(this.width * 0.2, this.height * 0.4);
 		// voltage source
-		this.context.moveTo(this.width * 0.1, this.height * 0.4);
-		this.context.lineTo(this.width * 0.3, this.height * 0.4);
-		this.context.moveTo(this.width * 0.25, this.height * 0.45);
-		this.context.lineTo(this.width * 0.15, this.height * 0.45);
+
 		// wire
 		this.context.moveTo(this.width * 0.2, this.height * 0.45);
 		this.context.lineTo(this.width * 0.2, this.height * 0.8);
@@ -69,25 +66,17 @@ function capacitorSim() {
 		this.context.lineTo(this.width * 0.8, this.height * 0.2);
 		this.context.lineTo(this.width * 0.8, this.height * 0.4);
 		// resistor
-		this.context.lineTo(this.width * 0.85, this.height * 0.42);
-		this.context.lineTo(this.width * 0.75, this.height * 0.44);
-		this.context.lineTo(this.width * 0.85, this.height * 0.46);
-		this.context.lineTo(this.width * 0.75, this.height * 0.48);
-		this.context.lineTo(this.width * 0.85, this.height * 0.50);		
-		this.context.lineTo(this.width * 0.75, this.height * 0.52);
-		this.context.lineTo(this.width * 0.85, this.height * 0.54);
-		this.context.lineTo(this.width * 0.75, this.height * 0.56);
-		this.context.lineTo(this.width * 0.85, this.height * 0.58);
-		this.context.lineTo(this.width * 0.80, this.height * 0.60);
 		// wire
 		this.context.lineTo(this.width * 0.8, this.height * 0.8);
 		this.context.lineTo(this.width * 0.5, this.height * 0.8);
+		this.context.lineWidth = 10;
 		this.context.stroke();
 		// switch
 		this.context.beginPath();
 		this.context.arc(this.width * 0.4, this.height * 0.2, 10, 0, 2 * Math.PI);
 		this.fillStyle = 'black';
 		this.context.fill();
+		this.context.lineWidth = 10;
 		this.context.stroke();
 		// switch
 		this.context.beginPath();
@@ -114,12 +103,51 @@ function capacitorSim() {
 		this.context.stroke();
 	};
 
+	this.batImage = document.getElementById("battery");
+
+	this.drawBattery = function(){
+		this.context.drawImage(this.batImage, this.width * 0.1525, this.height * 0.4, 150, 150);
+	}
+
+	this.bulb = document.getElementById("bulb");
+
+	this.drawBulb = function(){
+		// base
+		this.context.beginPath();
+		this.context.arc(this.width * 0.8, this.height * 0.49, 33, 0, 2 * Math.PI);
+		this.context.fillStyle = "white";
+		this.context.fill();
+		this.context.stroke();	
+		this.context.beginPath();
+		// yellow
+		this.context.beginPath();
+		this.context.arc(this.width * 0.8, this.height * 0.49, 33, 0, 2 * Math.PI);
+		this.context.fillStyle = (!this.circuit.switch) ? "rgba(255,255,0," + (this.circuit.percentCharge / 100) + ")" : "white";
+		this.context.fill();
+		this.context.stroke();	
+		this.context.beginPath();
+
+		this.context.arc(this.width * 0.8, this.height * 0.55, 20, 0, 2 * Math.PI);
+		this.context.fillStyle = "white";
+		this.context.fill();
+		//this.context.stroke();	
+		this.context.drawImage(this.bulb, this.width * 0.75, this.height * 0.4, 150, 150);
+
+		this.context.arc(this.width * 0.8, this.height * 0.55, 20, 0, 2 * Math.PI);
+		this.context.fillStyle = (!this.circuit.switch) ? "rgba(255,255,0," + (this.circuit.percentCharge / 100) + ")" : "white";
+		this.context.fill();
+		//this.context.stroke();	
+		this.context.drawImage(this.bulb, this.width * 0.75, this.height * 0.4, 150, 150);
+	}
+
 	this.update = function(){
 		this.circuit.otherStart = new Date();
 		this.context.clearRect(0,0,innerWidth, innerHeight);
 		this.drawLanes();
 		this.circuit.update();
 		this.updateCharges();
+		this.drawBattery();
+		this.drawBulb();
 
 		var text = (this.circuit.switch) ? "closed" : "open"
 		this.context.beginPath();
@@ -139,7 +167,7 @@ function capacitorSim() {
 		}
 
 	
-		if(this.circuit.gap > 10 + 20 * this.circuit.percentCharge / 100 && this.circuit.switch == true){
+		if(this.circuit.gap > 10 + 30 * (this.circuit.percentCharge / 100) && this.circuit.switch == true){
 			this.createCharge();
 			this.circuit.gap = 0;
 		}

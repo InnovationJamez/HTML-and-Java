@@ -133,11 +133,20 @@ function Question(){
 			var yMin = yAv - 25;
 			var yMax = yAv + 25;
 
+
 			if(this.canvas.probeList[0].x > xMin && this.canvas.probeList[0].x < xMax && 
 				this.canvas.probeList[0].y > yMin && this.canvas.probeList[0].y < yMax){
 				return true;
 			}
 			else{
+				this.canvas.context.moveTo(xMin, yMin); 
+				this.canvas.context.lineTo(xMin, yMax);
+				this.canvas.context.lineTo(xMax, yMax);
+				this.canvas.context.lineTo(xMax, yMin);
+				this.canvas.context.lineTo(xMin, yMin);
+				this.canvas.context.stroke();
+				this.canvas.context.fillStyle = 'grey';
+				this.canvas.context.fill();
 				return false;
 			}
 	}

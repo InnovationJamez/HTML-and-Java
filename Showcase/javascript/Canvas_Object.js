@@ -189,14 +189,14 @@ function Canvas_Object(width, height) {
 		this.context.fill();
 
 		this.context.font = "20px Arial";
-		this.context.fillStyle = "red";
+		this.context.fillStyle = "black";
 		this.context.textAlign = "center";
 		if(num !== ""){
-			this.context.fillText(correct + " Current angle: " + num, 
-				(xMin + xMax) / 2, (yMin + yMax) / 2 + 5);
+			this.context.fillText((correct) ? "Correct" : "Incorrect" + " Current Angle : " + 
+				num, (xMin + xMax) / 2, (yMin + yMax) / 2 + 5);
 		}
 		else{
-			this.context.fillText(correct, (xMin + xMax) / 2, 
+			this.context.fillText((correct) ? "Correct" : "Incorrect", (xMin + xMax) / 2, 
 				(yMin + yMax) / 2 + 5);
 		}
 	}

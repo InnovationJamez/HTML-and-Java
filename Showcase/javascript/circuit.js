@@ -34,15 +34,16 @@ function Circuit() {
 	this.updateCircuit = function(){
 
 		if(this.switch){
-			this.capVoltage = this.initCapVoltage + this.emf * (1 - Math.E ** (-this.elapsedTime * 10 ** -6 / 
+			this.capVoltage = this.initCapVoltage + this.emf * (1 - Math.E ** (-this.elapsedTime * 15 ** -5.25 / 
 				(this.res * this.cap)));
 		}
 		else{
-			this.capVoltage = this.initCapVoltage * Math.E ** (-this.elapsedTime * 10 ** -6 / 
+			this.capVoltage = this.initCapVoltage * Math.E ** (-this.elapsedTime * 10 ** -5.70 / 
 				(this.res * this.cap));
 		}
 
 		this.percentCharge = this.capVoltage / this.emf * 100;
+		this.percentCharge = (this.percentCharge > 100) ? 100 : this.percentCharge;
 		this.deltaV = this.emf - this.capVoltage;
 		this.I = this.deltaV / this.res;
 		
@@ -87,7 +88,7 @@ function Charge(x, y, s, width, height, chargeNum){
 		this.combinedList.push(new coord(this.width * 0.2, this.height * 0.8));
 		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.8));
 		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.50));
-		this.combinedList.push(new coord(this.width * 0.4 +(this.numcharges * 5) % (this.width * 0.2), 
+		this.combinedList.push(new coord(this.width * 0.4 +(this.numcharges * 10) % (this.width * 0.2), 
 			this.height * 0.5));	
 
 		// two
@@ -97,15 +98,15 @@ function Charge(x, y, s, width, height, chargeNum){
 		this.combinedList.push(new coord(this.width * 0.8, this.height * 0.2));
 		this.combinedList.push(new coord(this.width * 0.6, this.height * 0.2));
 		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.45));
-		this.combinedList.push(new coord(this.width * 0.4 + (this.numcharges * 5) % (this.width * 0.2), 
+		this.combinedList.push(new coord(this.width * 0.4 + (this.numcharges * 10) % (this.width * 0.2), 
 			this.height * 0.45));
 
 		// three
-		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.40));
+		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.45));
 		this.combinedList.push(new coord(this.width * 0.5, this.height * 0.30));
 		this.combinedList.push(new coord(this.width * 0.4, this.height * 0.20));
 		this.combinedList.push(new coord(this.width * 0.2, this.height * 0.20));
-		this.combinedList.push(new coord(this.width * 0.2, this.height * 0.40));
+		this.combinedList.push(new coord(this.width * 0.2, this.height * 0.50));
 
 		this.combinedListLength = this.combinedList.length;
 
@@ -124,20 +125,24 @@ function Charge(x, y, s, width, height, chargeNum){
 			this.dy = 0;
 		}
 		if(this.x < list[num].x){
-			this.dx = this.speed;
+			this.dx = this.speed * (this.width / this.height);
 		}
 		if(this.x > list[num].x){
-			this.dx = -this.speed;
+			this.dx = -this.speed * (this.width / this.height);
 		}
 		if(this.x == list[num].x){
 			this.dx = 0;
 		}
 		// if close to spot move to right on top of it
-		if(this.x > list[num].x - 4 && this.x < list[num].x + 4 && 
-			this.y > list[num].y - 4 && this.y < list[num].y + 4){
+		if(this.x > list[num].x - 2 && this.x < list[num].x + 2 && 
+			this.y > list[num].y - 2 && this.y < list[num].y + 2){
+
+			this.x = list[num].x;
+			this.y = list[num].y;
 
 			if(num < (length - 1)){
 				num += 1;
+				console.log(num);
 			}
 		}
 
@@ -153,18 +158,28 @@ function Charge(x, y, s, width, height, chargeNum){
 
 	this.draw = function(c){
 		c.beginPath();
-		c.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+		c.arc(this.x, this.y, 10, 0, 2 * Math.PI);
 		c.fillStyle = "red"
 		c.fill();
+		c.lineWidth = 2;
 		c.stroke();		
+
+		c.beginPath();
+		c.moveTo(this.x - 6, this.y);
+		c.lineTo(this.x + 6, this.y);
+		c.lineWidth = 2;
+		c.stroke();
 	};
 
 	this.update = function(c, move){
 		if(move == true && this.comCount < 4){
 			this.comCount = this.setSpeed(this.combinedList, this.comCount, this.combinedListLength);
 		}
+		else if(move == true && this.comCount == 5 || this.comCount == 4 && this.move == false){
+			this.comCount = 2;
+		}
 		else if(move == false && this.comCount >= 2 && this.comCount < 11){
-			this.comCount = (this.comCount < 3) ? 5 : this.comCount;
+			this.comCount = (this.comCount < 4) ? 5 : this.comCount;
 			this.comCount = this.setSpeed(this.combinedList, this.comCount, this.combinedListLength);
 		}
 		else if(move == true && this.comCount > 8){
