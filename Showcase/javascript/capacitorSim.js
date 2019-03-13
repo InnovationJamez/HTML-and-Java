@@ -160,6 +160,8 @@ function capacitorSim() {
 		this.context.fillText("Percent charge: " + this.circuit.percentCharge.toPrecision(2) + " %", this.width * 0.7, this.height * 0.5);
 		this.context.stroke();
 
+		// comment
+
 		if(this.circuit.switch){
 			this.circuit.gap += (this.circuit.endCount.getMilliseconds() + this.circuit.endCount.getSeconds() * 1000) - 
 				(this.circuit.otherStart.getMilliseconds() + this.circuit.otherStart.getSeconds() * 1000);		
