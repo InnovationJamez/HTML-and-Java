@@ -152,13 +152,12 @@ function capacitorSim() {
 		var text = (this.circuit.switch) ? "closed" : "open"
 		this.context.beginPath();
 		this.context.font = "20px Arial"; 
-		this.context.fillStyle = "black";                                                                         
-		this.context.fillText("switch: " + text, 20, 20);
-		this.context.fillText("charge: " + this.circuit.capVoltage.toPrecision(2) + " V", 20, 40);
-		this.context.fillText("percent charge: " + this.circuit.percentCharge.toPrecision(2) + " %", 20, 60);
-		//this.context.fillText("current: " + this.circuit.I.toPrecision(2) + " A", 20, 80);
-		//this.context.fillText("time: " + this.circuit.elapsedTime.toPrecision(2) + " us", 20, 100);
-		//this.context.fillText("gap: " + this.circuit.gap.toPrecision(2) + " ms", 20, 120);
+		this.context.fillStyle = "black";   
+		this.context.fillText("Battery voltage: " + this.circuit.emf + " V", this.width * 0.1, this.height * 0.5)                                                                      
+		this.context.fillText("switch: " + text, this.width * 0.5, this.height * 0.1);
+		this.context.textAlign = "center"; 
+		this.context.fillText("Charge: " + this.circuit.capVoltage.toPrecision(2) + " V",this.width * 0.7, this.height * 0.45);
+		this.context.fillText("Percent charge: " + this.circuit.percentCharge.toPrecision(2) + " %", this.width * 0.7, this.height * 0.5);
 		this.context.stroke();
 
 		if(this.circuit.switch){
