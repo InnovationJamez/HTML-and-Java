@@ -25,21 +25,21 @@ function Charge(x, y, q, height) {
 
 	this.draw = function(c){
 		c.beginPath();
-		c.arc(this.x, this.y, 10, Math.PI*2, false);
-		c.strokeStyle = 'rgb(' + this.x + ',' + 0 + ',' + this.y + ', 1)';
-		c.fillStyle = (q > 0) ? 'blue' : 'red';
+		c.moveTo(-Math.cos(this.angle * Math.PI / 180) * this.len + this.x, 
+			Math.sin(this.angle * Math.PI / 180) * this.len + this.y);
+		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
+			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
+		// Arrow Head
+		c.lineTo(-Math.cos((this.angle - 40) * Math.PI / 180) * -this.len  * 0.25 + this.x, 
+			Math.sin((this.angle - 40) * Math.PI / 180) * -this.len * 0.25 + this.y);
+		c.lineTo(-Math.cos((this.angle + 40) * Math.PI / 180) * -this.len * 0.25 + this.x, 
+			Math.sin((this.angle + 40) * Math.PI / 180) * -this.len * 0.25 + this.y);
+		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
+			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
+		c.strokeStyle = "rgb(" + (this.len * 10) + ", 0," + (this.len * 10) + ")";
+		c.fillStyle = "rgb(" + (this.len * 10) + ", 0," + (this.len * 10) + ")";
+        c.lineWidth = this.width / 4;
 		c.fill();
-		c.strokeStyle = (q > 0) ? 'blue' : 'red';
-		c.stroke();
-
-		c.beginPath();
-		c.moveTo(this.x - 8, this.y);
-		c.lineTo(this.x + 8, this.y);
-		if(this.q > 0){
-			c.moveTo(this.x, this.y - 8);
-			c.lineTo(this.x, this.y + 8);	
-		}
-		c.strokeStyle = "black";
 		c.stroke();
 	};
 
@@ -237,6 +237,4 @@ function Field_Probe(x, y, height) {
 	};
 
 }
-
-Field_Probe.prototype = new Field_Arrow(); 
 
