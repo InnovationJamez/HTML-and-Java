@@ -25,21 +25,21 @@ function Charge(x, y, q, height) {
 
 	this.draw = function(c){
 		c.beginPath();
-		c.moveTo(-Math.cos(this.angle * Math.PI / 180) * this.len + this.x, 
-			Math.sin(this.angle * Math.PI / 180) * this.len + this.y);
-		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
-			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
-		// Arrow Head
-		c.lineTo(-Math.cos((this.angle - 40) * Math.PI / 180) * -this.len  * 0.25 + this.x, 
-			Math.sin((this.angle - 40) * Math.PI / 180) * -this.len * 0.25 + this.y);
-		c.lineTo(-Math.cos((this.angle + 40) * Math.PI / 180) * -this.len * 0.25 + this.x, 
-			Math.sin((this.angle + 40) * Math.PI / 180) * -this.len * 0.25 + this.y);
-		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
-			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
-		c.strokeStyle = "rgb(" + (this.len * 10) + ", 0," + (this.len * 10) + ")";
-		c.fillStyle = "rgb(" + (this.len * 10) + ", 0," + (this.len * 10) + ")";
-        c.lineWidth = this.width / 4;
+		c.arc(this.x, this.y, 10, Math.PI*2, false);
+		c.strokeStyle = 'rgb(' + this.x + ',' + 0 + ',' + this.y + ', 1)';
+		c.fillStyle = (q > 0) ? 'blue' : 'red';
 		c.fill();
+		c.strokeStyle = (q > 0) ? 'blue' : 'red';
+		c.stroke();
+
+		c.beginPath();
+		c.moveTo(this.x - 8, this.y);
+		c.lineTo(this.x + 8, this.y);
+		if(this.q > 0){
+			c.moveTo(this.x, this.y - 8);
+			c.lineTo(this.x, this.y + 8);	
+		}
+		c.strokeStyle = "black";
 		c.stroke();
 	};
 
@@ -88,8 +88,9 @@ function Field_Arrow(x, y, height, angle = 0) {
 			Math.sin((this.angle + 40) * Math.PI / 180) * -this.len * 0.25 + this.y);
 		c.lineTo(-Math.cos(this.angle * Math.PI / 180) * -this.len + this.x, 
 			Math.sin(this.angle * Math.PI / 180) * -this.len + this.y);
-		c.strokeStyle = 'black';
-		c.fillStyle = 'black';
+		c.strokeStyle = "rgb(" + (this.len * 10) + ", 0," + (this.len * 10) + ")";
+		c.fillStyle = "rgb(" + (this.len * 10) + ", 0," + (this.len * 10) + ")";
+        c.lineWidth = this.width / 4;
 		c.fill();
 		c.stroke();
 	};
@@ -160,6 +161,7 @@ Field_Arrow.prototype.getComponentSum = function() {
 		this.magnitudeField = Math.sqrt(this.xFieldSum ** 2 + this.yFieldSum ** 2)
 		this.len = this.magnitudeField / 300000 + 5;
 		this.len = (this.len > 20) ? 20 : this.len;
+		this.width = this.len;
 
 	}
 	else{
