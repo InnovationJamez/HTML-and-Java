@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body{
+			margin:0px;
+		}
+		p, input, .choice, h3, button, textarea{
+			background-color: lightgreen;
+			border: 10px solid black;
+			margin-top-width:100px;
+			font-weight: bold;
+		}
+		p, h3, button, .choice, #textInput, #outPut, #key{
+			width:100%;
+		}
+		#textInput, #outPut, #key{
+			height:100px;
+		}
+		button.onhover{
+			background-color:blue;
+		}
+	</style>
+</head>
+<body>
+	<h3>Input: No new lines or tabs</h3>
+	<textarea id="textInput"></textarea>
+	<br>
+	<div class="choice">
+		<label>Encrypt: </label>
+		<input type="radio" id="eSelect" name="select" checked><br>
+		<label>Decrypt: </label>
+		<input type="radio" id="dSelect" name="select"><br>
+	</div>
+	<br>
+	<button id="btn">Submitt</button>
+	<h3>Output</h3>
+	<textarea id="outPut" disabled>Output will be displayed here</textarea>
+	<textarea id="key" disabled>Key will be displayed here</textarea>
+
+	<script src="encryption.js"></script>
+</body>
+</html>
