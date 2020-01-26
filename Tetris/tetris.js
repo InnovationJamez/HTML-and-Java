@@ -166,7 +166,7 @@ function gameLoop(){
 		}
 
 	}
-	drawStep();
+	drawStep(); 
 }
 
 // draw stuff

@@ -49,7 +49,7 @@ function createKey(count){
 		letterKey[a] = letterKey[b];
 		letterKey[b] = c;
 	}
-	key.value = letters;
+	key.value = letterKey;
 }
 
 createKey(60);
