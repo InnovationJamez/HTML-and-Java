@@ -14,4 +14,8 @@ function bubble(color, radias){
 		c.stroke();
 	}
 
+	this.move = function(){
+		
+	}
+
 }
